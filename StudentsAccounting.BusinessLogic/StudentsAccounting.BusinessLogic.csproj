@@ -15,8 +15,4 @@
     <ProjectReference Include="..\StudentsAccounting.DataAccess\StudentsAccounting.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>

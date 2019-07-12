@@ -10,7 +10,7 @@ namespace StudentsAccounting.DataAccess.Interfaces
     public interface IRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
-        IQueryable<T> GetAll(Expression<Func<T, bool>> predicate);
+        IQueryable<T> GetAll();
         Task<T> GetSingleAsync(Expression<Func <T, bool>> predicate);
         void Add(T entity);
         void Delete(T entity);

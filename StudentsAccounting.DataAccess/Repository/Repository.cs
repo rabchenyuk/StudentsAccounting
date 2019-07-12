@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.DataAccess.Repository
@@ -39,7 +38,7 @@ namespace StudentsAccounting.DataAccess.Repository
             _context.SaveChanges();
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> GetAll()
         {
             return _set.AsQueryable();
         }

@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.BusinessLogic.Services;
+using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.DataAccess.Context;
 using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
@@ -51,6 +52,7 @@ namespace StudentsAccounting.WebAPI
             services.AddScoped<DbContext, StudentsAccountingDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
             services.AddSingleton<IEmailSender, EmailSender>();

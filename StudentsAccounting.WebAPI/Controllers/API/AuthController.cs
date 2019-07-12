@@ -30,7 +30,6 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             var user = await _authService.Login(userToLogin);
             if (user == null)
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
-
             return Ok(new { token = user });
         }
         
@@ -42,15 +41,12 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             if (user.Succeeded)
             {
                 var result = await _authService.GenerateToken();
-
                 var callbackUrl = Url.Action(
                     "ConfirmEmail",
                     "Auth",
                     new { userId = result.userId, code = result.code },
                     protocol: HttpContext.Request.Scheme);
-
                 await _authService.SendEmail(callbackUrl, registerViewModel.Login);
-
                 return Content("To fiish registration check your email");
             }
             return BadRequest();
@@ -60,10 +56,8 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             var result = await _authService.Confirmation(userId, code);
-
             if (result.Succeeded)
                 return Ok();
-
             return BadRequest();
         }
     }
