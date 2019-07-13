@@ -1,8 +1,6 @@
 ﻿using StudentsAccounting.WebAPI.ViewModels.UserViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentsAccounting.WebAPI.ViewModels.CourseViewModels
 {

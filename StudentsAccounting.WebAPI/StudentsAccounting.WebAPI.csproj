@@ -26,6 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190713092301_init.cs" />
+    <Compile Remove="Migrations\20190713092652_init.cs" />
+    <Compile Remove="Migrations\20190713104044_add.cs" />
+    <Compile Remove="Migrations\20190713104239_init.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\StudentsAccounting.BusinessLogic\StudentsAccounting.BusinessLogic.csproj" />
     <ProjectReference Include="..\StudentsAccounting.DataAccess\StudentsAccounting.DataAccess.csproj" />
   </ItemGroup>

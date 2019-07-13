@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StudentsAccounting.DataAccess.Configuration.InitialData;
+using StudentsAccounting.DataAccess.Configuration.RelationConfig;
 using StudentsAccounting.DataAccess.Entities;
 
 namespace StudentsAccounting.DataAccess.Context
@@ -14,6 +15,7 @@ namespace StudentsAccounting.DataAccess.Context
         }
 
         public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<UsersCourses> UsersCourses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,6 +26,9 @@ namespace StudentsAccounting.DataAccess.Context
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new CoursesInitialData());
+            builder.ApplyConfiguration(new UsersCoursesConfig());
+            builder.ApplyConfiguration(new UsersInitialData());
+            builder.ApplyConfiguration(new UsersCoursesInitialData());
         }
     }
 }

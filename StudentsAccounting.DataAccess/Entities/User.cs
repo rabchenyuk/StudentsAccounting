@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 
 namespace StudentsAccounting.DataAccess.Entities
 {
@@ -8,6 +9,7 @@ namespace StudentsAccounting.DataAccess.Entities
         public User()
         {
             RegistrationDate = DateTime.Now;
+            Courses = new List<UsersCourses>();
         }
 
         public string FirstName { get; set; }
@@ -16,5 +18,6 @@ namespace StudentsAccounting.DataAccess.Entities
         public byte Age { get; set; }
         public bool IsMale { get; set; }
         public DateTime RegistrationDate { get; set; }
+        public virtual List<UsersCourses> Courses { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StudentsAccounting.DataAccess.Entities;
-using System.Collections.Generic;
 
 namespace StudentsAccounting.DataAccess.Configuration.InitialData
 {

@@ -20,10 +20,10 @@ namespace StudentsAccounting.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO coursesPaging)
+        public async Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging)
         {
             var courses = _repo.GetAll();
-            var pagedCourses = await PagedList<Course>.CreateAsync(courses, coursesPaging.PageNumber, coursesPaging.PageSize);
+            var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseDTO>
             {

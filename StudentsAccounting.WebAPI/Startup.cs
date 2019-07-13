@@ -52,6 +52,7 @@ namespace StudentsAccounting.WebAPI
             services.AddScoped<DbContext, StudentsAccountingDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
