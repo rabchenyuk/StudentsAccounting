@@ -7,6 +7,7 @@ namespace StudentsAccounting.BusinessLogic.Interfaces
     public interface ICourseService
     {
         Task<CourseDTO> GetCourseById(int id);
-        Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO coursesPaging);
+        Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging);
+        Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(CoursesPagingDTO paging);
     }
 }

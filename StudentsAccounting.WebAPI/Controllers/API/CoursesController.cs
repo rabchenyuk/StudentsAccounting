@@ -6,6 +6,7 @@ using StudentsAccounting.WebAPI.ViewModels.CourseViewModels;
 using System.Threading.Tasks;
 using StudentsAccounting.WebAPI.Helpers;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
@@ -28,6 +29,18 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             if (course == null)
                 return BadRequest("No such course");
             return Ok(_mapper.Map<CourseViewModel>(course));
+        }
+
+        [Authorize (Roles = "admin")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesPagingViewModel pagingViewModel)
+        {
+            var paging = _mapper.Map<CoursesPagingDTO>(pagingViewModel);
+            var result = await _courseService.GetAllCoursesForAdmin(paging);
+            var pageInfo = result.Info;
+            var coursesList = _mapper.Map<IEnumerable<CourseForAdminViewModel>>(result.List);
+            Response.AddPagination(pageInfo.CurrentPage, pageInfo.PageSize, pageInfo.TotalCount, pageInfo.TotalPages);
+            return Ok(coursesList);
         }
 
         [HttpGet("[action]")]

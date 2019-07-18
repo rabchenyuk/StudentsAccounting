@@ -83,6 +83,7 @@ namespace StudentsAccounting.WebAPI
                 options.Password.RequiredLength = 6;
             });
 
+            services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -114,6 +115,7 @@ namespace StudentsAccounting.WebAPI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Auth from './reducers/Auth';
+import * as Courses from './reducers/Courses';
 
 //function loggerMiddleware(store) {
 //    return function (next) {
@@ -22,7 +23,8 @@ import * as Auth from './reducers/Auth';
 
 export default function configureStore (history, initialState) {
   const reducers = {
-      auth: Auth.reducer
+      auth: Auth.reducer,
+      courses: Courses.reducer
   };
 
   const middleware = [

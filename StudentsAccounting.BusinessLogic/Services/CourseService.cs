@@ -39,6 +39,25 @@ namespace StudentsAccounting.BusinessLogic.Services
             return outputModel;
         }
 
+        public async Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(CoursesPagingDTO paging)
+        {
+            var courses = _repo.GetAll();
+            var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
+            var listModel = _mapper.Map<IEnumerable<CourseForAdminDTO>>(pagedCourses);
+            var outputModel = new PageInfo<CourseForAdminDTO>
+            {
+                List = listModel,
+                Info = new PaginationOutputInfo
+                {
+                    CurrentPage = pagedCourses.CurrentPage,
+                    PageSize = pagedCourses.PageSize,
+                    TotalCount = pagedCourses.TotalCount,
+                    TotalPages = pagedCourses.TotalPages
+                }
+            };
+            return outputModel;
+        }
+
         public async Task<CourseDTO> GetCourseById(int id)
         {
             var course = await _repo.GetByIdAsync(id);

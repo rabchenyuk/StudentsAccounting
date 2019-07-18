@@ -13,7 +13,8 @@ namespace StudentsAccounting.BusinessLogic.Mapping
         {
             CreateMap<RegisterDTO, User>()
                 .ForMember(u => u.Email, opt => opt.MapFrom(r => r.Login));
-            CreateMap<Course, CourseDTO>()
+            CreateMap<Course, CourseDTO>();
+            CreateMap<Course, CourseForAdminDTO>()
                 .ForMember(c => c.Attenders, opt => opt.MapFrom(u => u.Attenders.Select(user => new UserDTO
                 {
                     Id = user.User.Id,

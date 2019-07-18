@@ -1,5 +1,5 @@
-import axios from '../../axios';
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../actions/authTypes';
+import axios from '../../../axios';
+import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../Auth/authTypes';
 import jwt from 'jsonwebtoken';
 
 export const auth = (login, password, isLoggedIn) => {

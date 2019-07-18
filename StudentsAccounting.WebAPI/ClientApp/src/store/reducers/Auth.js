@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../actions/authTypes';
+import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../actions/Auth/authTypes';
 
 const initialState = {
     token: null,
