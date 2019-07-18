@@ -24,7 +24,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         }
         
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
         {
             var userToLogin = _mapper.Map<LoginDTO>(loginViewModel);
             var user = await _authService.Login(userToLogin);

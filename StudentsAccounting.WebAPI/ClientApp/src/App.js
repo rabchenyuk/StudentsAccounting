@@ -1,14 +1,53 @@
-import React from 'react';
-import { Route } from 'react-router';
-import Layout from './components/Layout';
-import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
+import React, { Component } from 'react';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Layout from './containers/Layout/Layout';
+import Auth from './containers/Auth/Auth';
+import Logout from './containers/Auth/Logout/Logout';
+import { autoLogin } from './store/actions/authActions';
 
-export default () => (
-  <Layout>
-    <Route exact path='/' component={Home} />
-    <Route path='/counter' component={Counter} />
-    <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
-  </Layout>
-);
+class App extends Component {
+    componentDidMount() {
+        this.props.autoLogin();
+    }
+
+    render() {
+        let routes = (
+            <Switch>
+                <Route path='/auth' component={Auth} />
+                <Route path='/' exact render={() => (<h1>Students Accounting</h1>)} />
+                <Redirect to='/' />
+            </Switch>
+        );
+
+        if (this.props.isLoggedIn) {
+            routes = (
+                <Switch>
+                    <Route path='/logout' component={Logout} />
+                    <Route path='/' exact render={() => (<h1>Students Accounting</h1>)} />
+                    <Redirect to='/' />
+                </Switch>
+            );
+        }
+
+        return (
+           <Layout>
+                { routes }
+           </Layout>
+         )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.token !== null
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        autoLogin: () => dispatch(autoLogin())
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
