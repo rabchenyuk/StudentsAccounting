@@ -22,7 +22,7 @@ namespace StudentsAccounting.BusinessLogic.Services
 
         public async Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging)
         {
-            var courses = _repo.GetAll();
+            var courses = _repo.GetAllQueryable();
             var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseDTO>
@@ -41,7 +41,7 @@ namespace StudentsAccounting.BusinessLogic.Services
 
         public async Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(CoursesPagingDTO paging)
         {
-            var courses = _repo.GetAll();
+            var courses = _repo.GetAllQueryable();
             var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseForAdminDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseForAdminDTO>

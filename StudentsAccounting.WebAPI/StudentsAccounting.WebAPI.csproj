@@ -30,6 +30,10 @@
     <Compile Remove="Migrations\20190713092652_init.cs" />
     <Compile Remove="Migrations\20190713104044_add.cs" />
     <Compile Remove="Migrations\20190713104239_init.cs" />
+    <Compile Remove="Migrations\20190713111033_init.cs" />
+    <Compile Remove="Migrations\20190718143639_init.cs" />
+    <Compile Remove="Migrations\20190718145044_init.cs" />
+    <Compile Remove="Migrations\20190718151629_init.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StudentsAccounting.DataAccess.Entities;
 using System;
@@ -54,7 +55,8 @@ namespace StudentsAccounting.DataAccess.Configuration.InitialData
                     Email = "vinnie@gmail.com",
                     EmailConfirmed = true,
                     IsMale = true,
-                    RegistrationDate = new DateTime(2018, 3, 8)
+                    RegistrationDate = new DateTime(2018, 3, 8),
+                    
                 },
                 new User
                 {
@@ -110,7 +112,7 @@ namespace StudentsAccounting.DataAccess.Configuration.InitialData
                     EmailConfirmed = true,
                     IsMale = true,
                     RegistrationDate = new DateTime(2018, 9, 18)
-                },
+                }
             };
             builder.HasData(users);
         }

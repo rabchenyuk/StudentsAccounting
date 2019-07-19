@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Services
@@ -32,18 +29,18 @@ namespace StudentsAccounting.BusinessLogic.Services
         public async Task<string> Login(LoginDTO loginDTO)
         {
             var result = await _userManager.FindByEmailAsync(loginDTO.Login.ToLower());
-
             if (result != null)
             {
+                var userRoles = await _userManager.GetRolesAsync(result);
                 var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
-                        new Claim(ClaimTypes.Name, result.FirstName == null ? result.Email : result.FirstName)
+                        new Claim(ClaimTypes.Name, result.FirstName == null ? result.Email : result.FirstName),
+                        new Claim(ClaimTypes.Role, userRoles[0].ToLower()),
+                        new Claim(ClaimTypes.IsPersistent, result.EmailConfirmed.ToString())
                     };
-
                 tokenToReturn = await _userManager.CheckPasswordAsync(result, loginDTO.Password) ? _jwtFactory.GenerateEncodedToken(claims) : null;
             }
-
             return tokenToReturn;
         }
 
@@ -52,6 +49,7 @@ namespace StudentsAccounting.BusinessLogic.Services
             var userToCreate = _mapper.Map<User>(registerDTO);
             userToCreate.UserName = registerDTO.Login;
             var user = await _userManager.CreateAsync(userToCreate, registerDTO.Password);
+            await _userManager.AddToRoleAsync(userToCreate, "student");
             currentUser = userToCreate;
             return user;
         }
@@ -71,12 +69,9 @@ namespace StudentsAccounting.BusinessLogic.Services
         public async Task<IdentityResult> Confirmation(string userId, string code)
         {
             var user = await _userManager.FindByIdAsync(userId);
-
             if (user == null)
                 return null;
-
             var result = await _userManager.ConfirmEmailAsync(user, code);
-
             return result;
         }
     }

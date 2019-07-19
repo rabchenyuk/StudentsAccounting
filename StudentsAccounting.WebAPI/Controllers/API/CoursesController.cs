@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class CoursesController : ControllerBase
     {
         private readonly ICourseService _courseService;
@@ -31,7 +32,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             return Ok(_mapper.Map<CourseViewModel>(course));
         }
 
-        [Authorize (Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesPagingViewModel pagingViewModel)
         {

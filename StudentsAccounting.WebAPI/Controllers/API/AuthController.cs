@@ -47,7 +47,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                     new { userId = result.userId, code = result.code },
                     protocol: HttpContext.Request.Scheme);
                 await _authService.SendEmail(callbackUrl, registerViewModel.Login);
-                return Content("To fiish registration check your email");
+                return Content("To finish registration check your email");
             }
             return BadRequest();
         }

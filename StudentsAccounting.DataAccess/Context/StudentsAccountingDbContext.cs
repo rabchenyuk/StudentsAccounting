@@ -29,6 +29,7 @@ namespace StudentsAccounting.DataAccess.Context
             builder.ApplyConfiguration(new UsersCoursesConfig());
             builder.ApplyConfiguration(new UsersInitialData());
             builder.ApplyConfiguration(new UsersCoursesInitialData());
+            builder.ApplyConfiguration(new RoleInitialData());
         }
     }
 }

@@ -14,8 +14,13 @@ export const auth = (login, password, isLoggedIn) => {
             const response = await axios.post(url, authData);
             const data = response.data;
             const decoded = jwt.decode(data.token);
+            const userCreds = {
+                token: data.token,
+                role: decoded.role,
+                emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent']
+            }
             localStorage.setItem('token', data.token);
-            dispatch(authSuccess(data.token));
+            dispatch(authSuccess(userCreds));
             dispatch(autoLogout(decoded.exp));
         } catch (e) {
             dispatch(authFail(e));
@@ -31,11 +36,13 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = token => {
+export const authSuccess = userCreds => {
     return {
         type: AUTH_SUCCESS,
         loading: false,
-        token
+        token: userCreds.token,
+        role: userCreds.role,
+        emailConfirmed: userCreds.emailConfirmed
     }
 }
 

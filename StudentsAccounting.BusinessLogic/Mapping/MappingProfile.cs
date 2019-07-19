@@ -26,6 +26,13 @@ namespace StudentsAccounting.BusinessLogic.Mapping
                     RegistrationDate = user.User.RegistrationDate
                 })));
             CreateMap<User, UserDTO>();
+            CreateMap<User, UserWithCoursesDTO>()
+                .ForMember(u => u.Courses, opt => opt.MapFrom(c => c.Courses.Select(course => new CourseDTO
+                {
+                    Id = course.CourseId,
+                    CourseName = course.Course.CourseName,
+                    StartDate = course.Course.StartDate
+                })));
         }
     }
 }

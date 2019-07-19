@@ -60,8 +60,8 @@ namespace StudentsAccounting.WebAPI
 
             services.AddAutoMapper(new Assembly[] 
             {
-                typeof(StudentsAccounting.WebAPI.Mapping.MappingProfile).GetTypeInfo().Assembly,
-                typeof(StudentsAccounting.BusinessLogic.Mapping.MappingProfile).GetTypeInfo().Assembly
+                typeof(Mapping.MappingProfile).GetTypeInfo().Assembly,
+                typeof(BusinessLogic.Mapping.MappingProfile).GetTypeInfo().Assembly
             });
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));

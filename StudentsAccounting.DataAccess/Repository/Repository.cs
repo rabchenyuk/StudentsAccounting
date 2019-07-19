@@ -23,7 +23,7 @@ namespace StudentsAccounting.DataAccess.Repository
         public void Add(T entity)
         {
             _set.Add(entity);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
         public void Delete(T entity)
@@ -38,7 +38,7 @@ namespace StudentsAccounting.DataAccess.Repository
             _context.SaveChanges();
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAllQueryable()
         {
             return _set.AsQueryable();
         }
