@@ -6,6 +6,10 @@ const Toolbar = props => (
         <nav>
             <NavigationItems isAuth={props.isAuth} />
         </nav>
+        {
+            props.isAuth === true ? <div>{props.isConfirmed === true ? <span>Hello {props.userName}</span> : <span>Please confirm your email</span>}</div>
+            : null
+        }
     </header>
 );
 

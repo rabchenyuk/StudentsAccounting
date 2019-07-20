@@ -57,7 +57,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         {
             var result = await _authService.Confirmation(userId, code);
             if (result.Succeeded)
-                return Ok();
+                return Redirect("/");
             return BadRequest();
         }
     }

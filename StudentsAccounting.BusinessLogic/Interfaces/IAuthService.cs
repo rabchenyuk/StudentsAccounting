@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Interfaces

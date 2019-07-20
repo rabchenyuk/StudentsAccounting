@@ -6,7 +6,11 @@ class Layout extends Component {
     render() {
         return (
             <React.Fragment>
-                <Toolbar isAuth={this.props.isAuth} />
+                <Toolbar
+                    isConfirmed={this.props.isConfirmed}
+                    isAuth={this.props.isAuth}
+                    userName={this.props.userName}
+                />
                 <main>
                     {this.props.children}
                 </main>
@@ -17,7 +21,9 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuth: state.auth.token !== null
+        isAuth: state.auth.token !== null,
+        isConfirmed: state.auth.emailConfirmed,
+        userName: state.auth.userName
     }
 }
 

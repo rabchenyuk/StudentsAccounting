@@ -6,6 +6,7 @@ import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import { autoLogin } from './store/actions/Auth/authActions';
 import Courses from './containers/Courses/Courses';
+import Profile from './containers/Auth/Profile/Profile';
 
 class App extends Component {
     componentDidMount() {
@@ -25,6 +26,7 @@ class App extends Component {
             routes = (
                 <Switch>
                     <Route path='/logout' component={Logout} />
+                    <Route path='/profile' component={Profile} />
                     <Route path='/' exact component={Courses} />
                     <Redirect to='/' />
                 </Switch>

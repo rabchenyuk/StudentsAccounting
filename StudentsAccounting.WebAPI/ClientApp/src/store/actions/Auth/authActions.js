@@ -17,7 +17,8 @@ export const auth = (login, password, isLoggedIn) => {
             const userCreds = {
                 token: data.token,
                 role: decoded.role,
-                emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent']
+                emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent'],
+                userName: decoded.unique_name
             }
             localStorage.setItem('token', data.token);
             dispatch(authSuccess(userCreds));
@@ -41,8 +42,9 @@ export const authSuccess = userCreds => {
         type: AUTH_SUCCESS,
         loading: false,
         token: userCreds.token,
+        userName: userCreds.userName,
         role: userCreds.role,
-        emailConfirmed: userCreds.emailConfirmed
+        emailConfirmed: userCreds.emailConfirmed === 'True' ? true : false
     }
 }
 
@@ -80,7 +82,13 @@ export const autoLogin  = () => {
                 if (decoded.exp < new Date().getTime().valueOf / 1000) {
                     dispatch(logout());
                 } else {
-                    dispatch(authSuccess(token));
+                    const userCreds = {
+                        token: decoded.token,
+                        role: decoded.role,
+                        emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent'],
+                        userName: decoded.unique_name
+                    }
+                    dispatch(authSuccess(userCreds));
                     dispatch(autoLogout(decoded.exp));
                 }
             }

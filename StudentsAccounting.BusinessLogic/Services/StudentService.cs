@@ -16,13 +16,11 @@ namespace StudentsAccounting.BusinessLogic.Services
     public class StudentService : IStudentService
     {
         private readonly IRepository<User> _userRepo;
-        private readonly IRepository<UsersCourses> _usersCoursesRepo;
         private readonly IMapper _mapper;
 
-        public StudentService(IRepository<User> userRepo, IRepository<UsersCourses> usersCoursesRepo, IMapper mapper)
+        public StudentService(IRepository<User> userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
-            _usersCoursesRepo = usersCoursesRepo;
             _mapper = mapper;
         }
 
@@ -66,35 +64,6 @@ namespace StudentsAccounting.BusinessLogic.Services
                 }
             };
             return outputModel;
-        }
-
-        public async Task<Response> RegisterToCourse(int userId, int courseId)
-        {
-            var res = new Response();
-            var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId);
-            if (userInCourse == null)
-            {
-                var userCourse = new UsersCourses { UserId = userId, CourseId = courseId };
-                try
-                {
-                    _usersCoursesRepo.Add(userCourse);
-                    res.Successful = true;
-                    res.Information = "You have successfully registered to course";
-                    return res;
-                }
-                catch (Exception e)
-                {
-                    res.Successful = false;
-                    res.Information = e.Message;
-                    return res;
-                }
-            }
-            else
-            {
-                res.Successful = false;
-                res.Information = "You have already registered on this course";
-                return res;
-            }
         }
     }
 }

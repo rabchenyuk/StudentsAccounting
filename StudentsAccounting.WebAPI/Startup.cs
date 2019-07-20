@@ -22,6 +22,7 @@ using StudentsAccounting.WebAPI.ViewModels.AuthViewModels;
 using StudentsAccounting.WebAPI.ViewModels.AuthViewModels.Validation;
 using System.Reflection;
 using System.Text;
+using StudentsAccounting.WebAPI.Helpers;
 
 namespace StudentsAccounting.WebAPI
 {
@@ -49,6 +50,7 @@ namespace StudentsAccounting.WebAPI
                 configuration.RootPath = "ClientApp/build";
             });
 
+            services.Configure<PhotoSettings>(Configuration.GetSection(nameof(PhotoSettings)));
             services.AddScoped<DbContext, StudentsAccountingDbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IAuthService, AuthService>();
@@ -57,6 +59,7 @@ namespace StudentsAccounting.WebAPI
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddAutoMapper(new Assembly[] 
             {

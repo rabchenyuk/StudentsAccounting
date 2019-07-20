@@ -4,6 +4,7 @@ using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,11 +13,13 @@ namespace StudentsAccounting.BusinessLogic.Services
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _repo;
+        private readonly IRepository<UsersCourses> _usersCoursesRepo;
         private readonly IMapper _mapper;
 
-        public CourseService(IRepository<Course> repo, IMapper mapper)
+        public CourseService(IRepository<Course> repo, IRepository<UsersCourses> usersCoursesRepo, IMapper mapper)
         {
             _repo = repo;
+            _usersCoursesRepo = usersCoursesRepo;
             _mapper = mapper;
         }
 
@@ -64,6 +67,35 @@ namespace StudentsAccounting.BusinessLogic.Services
             if (course == null)
                 return null;
             return _mapper.Map<CourseDTO>(course);
+        }
+
+        public async Task<Response> RegisterToCourse(int userId, int courseId)
+        {
+            var res = new Response();
+            var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId);
+            if (userInCourse == null)
+            {
+                var userCourse = new UsersCourses { UserId = userId, CourseId = courseId };
+                try
+                {
+                    _usersCoursesRepo.Add(userCourse);
+                    res.Successful = true;
+                    res.Information = "You have successfully registered to course";
+                    return res;
+                }
+                catch (Exception e)
+                {
+                    res.Successful = false;
+                    res.Information = e.Message;
+                    return res;
+                }
+            }
+            else
+            {
+                res.Successful = false;
+                res.Information = "You have already registered on this course";
+                return res;
+            }
         }
     }
 }

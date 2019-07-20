@@ -36,8 +36,8 @@ namespace StudentsAccounting.BusinessLogic.Services
                     {
                         new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
                         new Claim(ClaimTypes.Name, result.FirstName == null ? result.Email : result.FirstName),
-                        new Claim(ClaimTypes.Role, userRoles[0].ToLower()),
-                        new Claim(ClaimTypes.IsPersistent, result.EmailConfirmed.ToString())
+                        new Claim(ClaimTypes.Role, userRoles.Count > 0 ? userRoles[0].ToLower() : "No role"),
+                        new Claim(ClaimTypes.IsPersistent, result.EmailConfirmed.ToString() ?? "Not confirmed")
                     };
                 tokenToReturn = await _userManager.CheckPasswordAsync(result, loginDTO.Password) ? _jwtFactory.GenerateEncodedToken(claims) : null;
             }
@@ -49,7 +49,6 @@ namespace StudentsAccounting.BusinessLogic.Services
             var userToCreate = _mapper.Map<User>(registerDTO);
             userToCreate.UserName = registerDTO.Login;
             var user = await _userManager.CreateAsync(userToCreate, registerDTO.Password);
-            await _userManager.AddToRoleAsync(userToCreate, "student");
             currentUser = userToCreate;
             return user;
         }
@@ -72,6 +71,7 @@ namespace StudentsAccounting.BusinessLogic.Services
             if (user == null)
                 return null;
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            await _userManager.AddToRoleAsync(user, "student");
             return result;
         }
     }

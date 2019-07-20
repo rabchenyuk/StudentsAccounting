@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StudentsAccounting.WebAPI.Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
@@ -53,6 +54,19 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             var coursesList = _mapper.Map<IEnumerable<CourseViewModel>>(result.List);
             Response.AddPagination(pageInfo.CurrentPage, pageInfo.PageSize, pageInfo.TotalCount, pageInfo.TotalPages);
             return Ok(coursesList);
+        }
+
+        [Authorize(Roles = "student")]
+        [HttpPost("registerToCourse")]
+        public async Task<IActionResult> RegisterToCourse([FromBody]CourseId course)
+        {
+            string userConfirmed = User.FindFirst(ClaimTypes.IsPersistent).Value;
+            if (userConfirmed == "False")
+                return BadRequest("Confirm your email to be allowed for subscribtion");
+            var res = await _courseService.RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), course.Id);
+            if (res.Successful)
+                return Ok(res.Information);
+            return BadRequest(res.Information);
         }
     }
 }

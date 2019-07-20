@@ -9,6 +9,5 @@ namespace StudentsAccounting.BusinessLogic.Interfaces
     {
         Task<PageInfo<UserDTO>> GetStudents(QueryParamsDTO filters);
         Task<UserWithCoursesDTO> GetStudent(int id);
-        Task<Response> RegisterToCourse(int userId, int courseId);
     }
 }
