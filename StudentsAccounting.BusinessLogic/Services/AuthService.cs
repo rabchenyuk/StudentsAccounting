@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
+using StudentsAccounting.BusinessLogic.DTO.UserDTO;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
 using System.Collections.Generic;
@@ -65,14 +66,15 @@ namespace StudentsAccounting.BusinessLogic.Services
                 $"Finish your registration using this link: <a href='{callbackUrl}'>link</a>");
         }
 
-        public async Task<IdentityResult> Confirmation(string userId, string code)
+        public async Task<string> Confirmation(string userId, string code, string password)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null;
-            var result = await _userManager.ConfirmEmailAsync(user, code);
             await _userManager.AddToRoleAsync(user, "student");
-            return result;
+            await _userManager.ConfirmEmailAsync(user, code);
+            var userToLogin = new LoginDTO { Login = user.Email, Password = password };
+            return await Login(userToLogin);
         }
     }
 }

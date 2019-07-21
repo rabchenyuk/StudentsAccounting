@@ -82,8 +82,9 @@ export const autoLogin  = () => {
                 if (decoded.exp < new Date().getTime().valueOf / 1000) {
                     dispatch(logout());
                 } else {
+                    console.log(decoded);
                     const userCreds = {
-                        token: decoded.token,
+                        token: token,
                         role: decoded.role,
                         emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent'],
                         userName: decoded.unique_name
@@ -95,5 +96,12 @@ export const autoLogin  = () => {
         } else {
             dispatch(logout());
         }
+    }
+}
+
+export const confirm = token => {
+    localStorage.setItem('token', token);
+    return dispatch => {
+        dispatch(autoLogin());
     }
 }

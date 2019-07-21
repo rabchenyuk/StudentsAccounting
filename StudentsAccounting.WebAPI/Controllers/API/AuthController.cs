@@ -32,7 +32,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
             return Ok(new { token = user });
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel registerViewModel)
         {
@@ -44,7 +44,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                 var callbackUrl = Url.Action(
                     "ConfirmEmail",
                     "Auth",
-                    new { userId = result.userId, code = result.code },
+                    new { userId = result.userId, code = result.code, password = registerViewModel.Password },
                     protocol: HttpContext.Request.Scheme);
                 await _authService.SendEmail(callbackUrl, registerViewModel.Login);
                 return Content("To finish registration check your email");
@@ -53,11 +53,11 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string password)
         {
-            var result = await _authService.Confirmation(userId, code);
-            if (result.Succeeded)
-                return Redirect("/");
+            var result = await _authService.Confirmation(userId, code, password);
+            if (!string.IsNullOrEmpty(result))
+                return Redirect($"/confirm?token={result}");
             return BadRequest();
         }
     }

@@ -31,7 +31,7 @@ namespace StudentsAccounting.BusinessLogic.Services
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(_emailSettings.MailServer, 25, false);
+                await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, false);
                 await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
