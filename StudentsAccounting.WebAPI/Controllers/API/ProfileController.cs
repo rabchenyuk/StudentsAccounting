@@ -8,6 +8,7 @@ using StudentsAccounting.WebAPI.ViewModels.UserViewModels;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using StudentsAccounting.WebAPI.Helpers;
+using Hangfire;
 
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
@@ -17,12 +18,14 @@ namespace StudentsAccounting.WebAPI.Controllers.API
     {
         private readonly IProfileService _profile;
         private readonly IMapper _mapper;
+        private readonly IBackgroundJobClient _backgroundJob;
         private readonly PhotoSettings _photoSettings;
 
-        public ProfileController(IProfileService profile, IMapper mapper, IOptions<PhotoSettings> options)
+        public ProfileController(IProfileService profile, IMapper mapper, IOptions<PhotoSettings> options, IBackgroundJobClient backgroundJob)
         {
             _profile = profile;
             _mapper = mapper;
+            _backgroundJob = backgroundJob;
             _photoSettings = options.Value;
         }
 

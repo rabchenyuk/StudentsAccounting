@@ -57,6 +57,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         }
 
         [Authorize(Roles = "student")]
+        [Authorize]
         [HttpPost("registerToCourse")]
         public async Task<IActionResult> RegisterToCourse([FromBody]CourseId course)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hangfire;
 using StudentsAccounting.BusinessLogic.DTO.CourseDTO;
 using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.BusinessLogic.Interfaces;
@@ -15,12 +16,17 @@ namespace StudentsAccounting.BusinessLogic.Services
         private readonly IRepository<Course> _repo;
         private readonly IRepository<UsersCourses> _usersCoursesRepo;
         private readonly IMapper _mapper;
+        private readonly IBackgroundEmailSender _backgroundEmailSender;
 
-        public CourseService(IRepository<Course> repo, IRepository<UsersCourses> usersCoursesRepo, IMapper mapper)
+        public CourseService(IRepository<Course> repo,
+                             IRepository<UsersCourses> usersCoursesRepo,
+                             IMapper mapper,
+                             IBackgroundEmailSender backgroundEmailSender)
         {
             _repo = repo;
             _usersCoursesRepo = usersCoursesRepo;
             _mapper = mapper;
+            _backgroundEmailSender = backgroundEmailSender;
         }
 
         public async Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging)
@@ -81,6 +87,7 @@ namespace StudentsAccounting.BusinessLogic.Services
                     _usersCoursesRepo.Add(userCourse);
                     res.Successful = true;
                     res.Information = "You have successfully registered to course";
+                    await _backgroundEmailSender.SendNotificationEmails(userId, courseId);
                     return res;
                 }
                 catch (Exception e)

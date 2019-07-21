@@ -23,6 +23,7 @@ using StudentsAccounting.WebAPI.ViewModels.AuthViewModels.Validation;
 using System.Reflection;
 using System.Text;
 using StudentsAccounting.WebAPI.Helpers;
+using Hangfire;
 
 namespace StudentsAccounting.WebAPI
 {
@@ -60,6 +61,7 @@ namespace StudentsAccounting.WebAPI
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
 
             services.AddAutoMapper(new Assembly[] 
             {
@@ -99,6 +101,10 @@ namespace StudentsAccounting.WebAPI
                         ValidateAudience = false
                     };
                 });
+
+            services.AddHangfire(config =>
+                config.UseSqlServerStorage(Configuration.GetConnectionString("Default")));
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,6 +121,8 @@ namespace StudentsAccounting.WebAPI
                 app.UseHsts();
             }
 
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

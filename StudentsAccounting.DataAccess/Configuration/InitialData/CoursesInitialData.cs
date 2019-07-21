@@ -53,6 +53,12 @@ namespace StudentsAccounting.DataAccess.Configuration.InitialData
                     CourseName = "Machine learning",
                     StartDate = new System.DateTime(2019, 12, 15)
                 },
+                new Course
+                {
+                    Id = ++id,
+                    CourseName = "Test",
+                    StartDate = new System.DateTime(2019, 7, 21, 19, 45, 10)
+                },
             };
             builder.HasData(course);
         }
