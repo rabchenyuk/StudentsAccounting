@@ -9,6 +9,9 @@ function validateEmail(email) {
 }
 
 class Auth extends Component {
+    componentDidMount() {
+        console.log(this.props);
+    }
     state = { 
         formControls: {
             email: {
@@ -102,13 +105,16 @@ class Auth extends Component {
     }
 
     render() {
+        const oldForm = (
+            <form>
+                {this.renderInputs()}
+                <button onClick={this.loginHandler}>Login</button>
+                <button onClick={this.registerHandler}>Register</button>
+            </form>
+        );
         return (
             <React.Fragment>
-                <form>
-                    { this.renderInputs() }
-                    <button onClick={this.loginHandler}>Login</button>
-                    <button onClick={this.registerHandler}>Register</button>
-                </form>
+                {oldForm}
             </React.Fragment>
         );
     }

@@ -11,20 +11,17 @@ namespace StudentsAccounting.BusinessLogic.Services
         private readonly IEmailSender _emailSender;
         private readonly IRepository<User> _userRepo;
         private readonly IRepository<Course> _courseRepo;
-        private readonly IRepository<UsersCourses> _usersCoursesRepo;
 
         public BackgroundEmailSender(IEmailSender emailSender,
                                      IRepository<User> userRepo,
-                                     IRepository<UsersCourses> usersCoursesRepo,
                                      IRepository<Course> courseRepo)
         {
             _emailSender = emailSender;
             _userRepo = userRepo;
             _courseRepo = courseRepo;
-            _usersCoursesRepo = usersCoursesRepo;
         }
 
-        public async Task SendNotificationEmails(int userId, int courseId)
+        public async void SendNotificationEmails(int userId, int courseId)
         {
             var user = await _userRepo.GetSingleAsync(u => u.Id == userId);
             var currentCourse = await _courseRepo.GetByIdAsync(courseId);

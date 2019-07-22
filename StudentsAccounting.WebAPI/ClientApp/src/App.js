@@ -6,7 +6,7 @@ import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import { autoLogin } from './store/actions/Auth/authActions';
 import Courses from './containers/Courses/Courses';
-import Profile from './containers/Auth/Profile/Profile';
+import Profile from './containers//Profile/Profile';
 import Confirm from './containers/Auth/Confirm/Confirm';
 
 class App extends Component {

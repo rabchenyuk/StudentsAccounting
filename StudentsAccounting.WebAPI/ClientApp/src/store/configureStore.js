@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Auth from './reducers/Auth';
 import * as Courses from './reducers/Courses';
+import * as Profile from './reducers/Profile';
 
 //function loggerMiddleware(store) {
 //    return function (next) {
@@ -24,7 +25,8 @@ import * as Courses from './reducers/Courses';
 export default function configureStore (history, initialState) {
   const reducers = {
       auth: Auth.reducer,
-      courses: Courses.reducer
+      courses: Courses.reducer,
+      profile: Profile.reducer
   };
 
   const middleware = [

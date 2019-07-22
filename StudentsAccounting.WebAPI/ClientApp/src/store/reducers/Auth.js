@@ -1,6 +1,7 @@
 import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../actions/Auth/authTypes';
 
 const initialState = {
+    userId: null,
     token: null,
     role: null,
     emailConfirmed: null,
@@ -27,7 +28,8 @@ export const reducer = (state = initialState, action) => {
                 token: null,
                 role: null,
                 emailConfirmed: null,
-                userName: null
+                userName: null,
+                userId: null
             }
         case AUTH_FAIL:
             return { ...state, error: action.error, loading: action.loading }

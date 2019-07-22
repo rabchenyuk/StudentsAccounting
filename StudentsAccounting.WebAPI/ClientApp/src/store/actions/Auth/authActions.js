@@ -15,6 +15,7 @@ export const auth = (login, password, isLoggedIn) => {
             const data = response.data;
             const decoded = jwt.decode(data.token);
             const userCreds = {
+                userId: data.nameid,
                 token: data.token,
                 role: decoded.role,
                 emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent'],
@@ -82,7 +83,6 @@ export const autoLogin  = () => {
                 if (decoded.exp < new Date().getTime().valueOf / 1000) {
                     dispatch(logout());
                 } else {
-                    console.log(decoded);
                     const userCreds = {
                         token: token,
                         role: decoded.role,

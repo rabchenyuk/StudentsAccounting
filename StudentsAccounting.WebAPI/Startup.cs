@@ -61,7 +61,7 @@ namespace StudentsAccounting.WebAPI
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IProfileService, ProfileService>();
-            services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
+            services.AddTransient<IBackgroundEmailSender, BackgroundEmailSender>();
 
             services.AddAutoMapper(new Assembly[] 
             {

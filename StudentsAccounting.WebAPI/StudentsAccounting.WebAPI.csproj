@@ -56,6 +56,10 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\..\..\ASP.NET%2528Core%2529\StudentsAccounting\StudentsAccounting\StudentsAccounting.WebAPI\ClientApp\src\containers\Profile\Profile.js" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

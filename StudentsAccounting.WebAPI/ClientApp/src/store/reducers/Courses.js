@@ -1,4 +1,4 @@
-﻿import { COURSES_SUCCESS, COURSES_START, COURSES_ERROR } from "../actions/Courses/coursesTypes";
+﻿import { COURSES_SUCCESS, COURSES_START, COURSES_ERROR, START_SUBSCRIBING, SUBSCRIPTION_SUCCESSFULL, SUBSCRIBE_ERROR } from "../actions/Courses/coursesTypes";
 
 const initialState = {
     courses: [],
@@ -26,6 +26,22 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.error,
+                loading: action.loading
+            }
+        case START_SUBSCRIBING:
+            return {
+                ...state,
+                loading: action.loading
+            }
+        case SUBSCRIBE_ERROR:
+            return {
+                ...state,
+                loading: action.loading,
+                error: action.error
+            }
+        case SUBSCRIPTION_SUCCESSFULL:
+            return {
+                ...state,
                 loading: action.loading
             }
         default:

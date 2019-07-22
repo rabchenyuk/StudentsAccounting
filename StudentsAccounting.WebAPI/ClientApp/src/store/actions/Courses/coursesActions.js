@@ -1,5 +1,5 @@
 ﻿import axios from '../../../axios';
-import { COURSES_START, COURSES_SUCCESS, COURSES_ERROR } from './coursesTypes';
+import { COURSES_START, COURSES_SUCCESS, COURSES_ERROR, START_SUBSCRIBING, SUBSCRIBE_ERROR, SUBSCRIPTION_SUCCESSFULL } from './coursesTypes';
 
 export const fetchCourses = (pageNumber) => {
     return async dispatch => {
@@ -13,7 +13,7 @@ export const fetchCourses = (pageNumber) => {
             const pageInfo = JSON.parse(response.headers.pagination);
             Object.keys(response.data).forEach((key, index) => {
                 courses.push({
-                    id: key,
+                    id: response.data[index].id,
                     name: response.data[index].courseName,
                     startDate: response.data[index].startDate
                 })
@@ -51,5 +51,41 @@ export const fetchCoursesError = e => {
         type: COURSES_ERROR,
         error: e,
         loading: false
+    }
+}
+
+export const subscribeToCourse = Id => {
+    const token = localStorage.getItem('token');
+    const courseData = { Id };
+    return async dispatch => {
+        dispatch(startSubscribing());
+        try {
+            await axios.post('/courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
+            dispatch(subscribtionSuccessfull());
+        } catch (e) {
+            dispatch(subscribeError(e));
+        }
+    }
+}
+
+export const subscribtionSuccessfull = () => {
+    return {
+        type: SUBSCRIPTION_SUCCESSFULL,
+        loading: false
+    }
+}
+
+export const startSubscribing = () => {
+    return {
+        type: START_SUBSCRIBING,
+        loading: true
+    }
+}
+
+export const subscribeError = e => {
+    return {
+        type: SUBSCRIBE_ERROR,
+        loading: false,
+        error: e
     }
 }

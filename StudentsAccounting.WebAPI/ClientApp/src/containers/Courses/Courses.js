@@ -1,68 +1,42 @@
 ﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCourses } from '../../store/actions/Courses/coursesActions';
+import { fetchCourses, subscribeToCourse } from '../../store/actions/Courses/coursesActions';
+import CourseCard from '../../components/CourseCard/CourseCard';
+import { Grid } from 'semantic-ui-react';
+import Pagination from '../../components/Pagination/Pagination';
 
 class Courses extends Component {
     componentDidMount() {
         this.props.fetchCourses();
     }
 
-    getKeys = () => {
-        return Object.keys(this.props.coursesList[0]);
-    }
-
-    getHeader = () => {
-        const keys = this.getKeys();
-        return keys.map((key) => {
-            return <th key={key}>{key.toUpperCase()}</th>
-        })
-    }
-
-    renderRow = (keys, data) => {
-        return keys.map((key) => {
-            return <td key={data[key]}>{data[key]}</td>
-        })
-    }
-
-    getContent = () => {
-        var keys = this.getKeys();
-        return this.props.coursesList.map((row, index) => {
-            return <tr key={index}>{this.renderRow(keys, row)}</tr>
-        })
-    }
-
     render() {
-        let table = (
-            <React.Fragment>
-                <table>
-                    <thead>
-                        <tr>
-                            {this.props.coursesList.length > 0 ? this.getHeader() : null}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.coursesList.length > 0 ? this.getContent() : null}
-                    </tbody>
-                </table>
-                <button disabled={this.props.currentPage === 1} onClick={() => this.props.fetchCourses(this.props.currentPage - 1)}>Previous</button>
-                {
-                    this.props.totalPages.map((val, index) => {
-                        return <span key={index}> {val} </span>
-                    })
-                }
-                <button disabled={this.props.totalPages === this.props.currentPage} onClick={() => this.props.fetchCourses(this.props.currentPage + 1)}>Next</button>
-            </React.Fragment>
-        );
-
-        if (this.props.coursesList.length === 0) {
-            table = <h4>Loading list of courses...</h4>
-        }
-
         return (
-            <div>
-                Courses list:
-                {table}
-            </div>
+            <React.Fragment>
+                <Grid columns={3}>
+                    <Grid.Row>
+                        {this.props.coursesList.length === 0 ? <h4>Loading list of courses...</h4> :
+                            this.props.coursesList.map((val, index) => {
+                                return (
+                                    <CourseCard
+                                        key={index}
+                                        header={val.name}
+                                        subscribe={this.props.subscribe}
+                                        courseId={val.id}
+                                        confirmed={this.props.emailConfirmed}
+                                    />
+                                );
+                            })
+                        }
+                    </Grid.Row>
+                    {this.props.coursesList.length === 0 ? null :
+                        <Pagination
+                            currentPage={this.props.currentPage}
+                            loadCourses={this.props.fetchCourses}
+                            totalPages={this.props.totalPages} />
+                    }
+                </Grid>
+            </React.Fragment>
         );
     }
 }
@@ -72,13 +46,15 @@ const mapStateToProps = state => {
         coursesList: state.courses.courses,
         loading: state.courses.loading,
         totalPages: state.courses.totalPages,
-        currentPage: state.courses.currentPage
+        currentPage: state.courses.currentPage,
+        emailConfirmed: state.auth.emailConfirmed
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchCourses: currentPage => dispatch(fetchCourses(currentPage))
+        fetchCourses: currentPage => dispatch(fetchCourses(currentPage)),
+        subscribe: (Id) => dispatch(subscribeToCourse(Id))
     }
 }
 
