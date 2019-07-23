@@ -16,7 +16,8 @@ namespace StudentsAccounting.WebAPI.Mapping
         {
             CreateMap<LoginViewModel, LoginDTO>();
             CreateMap<RegisterViewModel, RegisterDTO>();
-            CreateMap<CoursesPagingViewModel, CoursesPagingDTO>();
+            CreateMap<CoursesQueryViewModel, CoursesPagingDTO>();
+            CreateMap<CoursesQueryViewModel, QueryParamsDTO>();
             CreateMap<CourseDTO, CourseViewModel>();
             CreateMap<CourseForAdminDTO, CourseForAdminViewModel>();
             CreateMap<StudentQueryViewModel, QueryParamsDTO>();

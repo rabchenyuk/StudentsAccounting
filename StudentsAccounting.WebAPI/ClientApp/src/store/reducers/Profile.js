@@ -7,7 +7,8 @@ const initialState = {
     lastName: null,
     age: null,
     photoUrl: null,
-    gender: null
+    gender: null,
+    registered: null
 };
 
 export const reducer = (state = initialState, action) => {
@@ -20,7 +21,8 @@ export const reducer = (state = initialState, action) => {
                 lastName: action.lastName,
                 photoUrl: action.photoUrl,
                 gender: action.gender,
-                age: action.age
+                age: action.age,
+                registered: action.registered
             }
         case PROFILE_START:
             return {

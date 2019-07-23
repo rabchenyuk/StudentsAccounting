@@ -8,6 +8,7 @@ using StudentsAccounting.WebAPI.Helpers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using StudentsAccounting.BusinessLogic.Helpers;
 
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
@@ -35,10 +36,10 @@ namespace StudentsAccounting.WebAPI.Controllers.API
 
         [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesPagingViewModel pagingViewModel)
+        public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesQueryViewModel coursesViewModel)
         {
-            var paging = _mapper.Map<CoursesPagingDTO>(pagingViewModel);
-            var result = await _courseService.GetAllCoursesForAdmin(paging);
+            var courses = _mapper.Map<QueryParamsDTO>(coursesViewModel);
+            var result = await _courseService.GetAllCoursesForAdmin(courses);
             var pageInfo = result.Info;
             var coursesList = _mapper.Map<IEnumerable<CourseForAdminViewModel>>(result.List);
             Response.AddPagination(pageInfo.CurrentPage, pageInfo.PageSize, pageInfo.TotalCount, pageInfo.TotalPages);
@@ -46,7 +47,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetCourses([FromQuery]CoursesPagingViewModel pagingViewModel)
+        public async Task<IActionResult> GetCourses([FromQuery]CoursesQueryViewModel pagingViewModel)
         {
             var paging = _mapper.Map<CoursesPagingDTO>(pagingViewModel);
             var result = await _courseService.GetAllCourses(paging);

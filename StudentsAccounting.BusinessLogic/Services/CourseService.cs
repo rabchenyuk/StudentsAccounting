@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Hangfire;
+using System.Linq;
 using StudentsAccounting.BusinessLogic.DTO.CourseDTO;
 using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.BusinessLogic.Interfaces;
@@ -7,6 +7,7 @@ using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Services
@@ -32,7 +33,7 @@ namespace StudentsAccounting.BusinessLogic.Services
         public async Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging)
         {
             var courses = _repo.GetAllQueryable();
-            var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
+            var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.CurrentPage, paging.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseDTO>
             {
@@ -48,10 +49,19 @@ namespace StudentsAccounting.BusinessLogic.Services
             return outputModel;
         }
 
-        public async Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(CoursesPagingDTO paging)
+        public async Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(QueryParamsDTO queryParams)
         {
             var courses = _repo.GetAllQueryable();
-            var pagedCourses = await PagedList<Course>.CreateAsync(courses, paging.PageNumber, paging.PageSize);
+            if (!string.IsNullOrEmpty(queryParams.Search))
+                courses = courses.Where(s => s.CourseName.ToLower().Equals(queryParams.Search.ToLower()));
+            var columnsMap = new Dictionary<string, Expression<Func<Course, object>>>
+            {
+                ["id"] = s => s.Id,
+                ["courseName"] = s => s.CourseName,
+                ["startDate"] = s => s.StartDate
+            };
+            courses.ApplyOrdering(queryParams, columnsMap);
+            var pagedCourses = await PagedList<Course>.CreateAsync(courses, queryParams.CurrentPage, queryParams.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseForAdminDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseForAdminDTO>
             {

@@ -11,13 +11,13 @@ class Profile extends Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Your profile</h1>
                 <ProfileInfo
                     firstName={this.props.firstName}
                     lastName={this.props.lastName}
                     age={this.props.age}
                     gender={this.props.gender}
                     photoUrl={this.props.photoUrl}
+                    registered={this.props.registered}
                 />
             </React.Fragment>
         )
@@ -31,7 +31,8 @@ const mapStateToProps = state => {
         age: state.profile.age, 
         photoUrl: state.profile.photoUrl,
         gender: state.profile.gender,
-        token: state.auth.token
+        token: state.auth.token,
+        registered: state.profile.registered
     }
 }
 

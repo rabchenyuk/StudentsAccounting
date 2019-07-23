@@ -26,7 +26,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
 
         [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetStudents([FromQuery]StudentQueryViewModel studentViewModel)
+        public async Task<IActionResult> GetStudentsForAdmin([FromQuery]StudentQueryViewModel studentViewModel)
         {
             var queryDTO = _mapper.Map<QueryParamsDTO>(studentViewModel);
             var result = await _studentService.GetStudents(queryDTO);

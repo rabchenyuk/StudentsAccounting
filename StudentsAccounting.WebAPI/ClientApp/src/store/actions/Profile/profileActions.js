@@ -29,7 +29,8 @@ export const fetchProfileSuccess = userData => {
         lastName: userData.lastName,
         age: userData.age,
         photoUrl: userData.photoUrl,
-        gender: userData.isMale ? "Male" : "Female"
+        gender: userData.isMale ? "Male" : "Female",
+        registered: userData.registrationDate
     }
 }
 

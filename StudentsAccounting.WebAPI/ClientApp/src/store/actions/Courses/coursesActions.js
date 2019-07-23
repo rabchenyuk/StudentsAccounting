@@ -1,14 +1,14 @@
 ﻿import axios from '../../../axios';
 import { COURSES_START, COURSES_SUCCESS, COURSES_ERROR, START_SUBSCRIBING, SUBSCRIBE_ERROR, SUBSCRIPTION_SUCCESSFULL } from './coursesTypes';
 
-export const fetchCourses = (pageNumber) => {
+export const fetchCourses = (currentPage) => {
     return async dispatch => {
         dispatch(startFetchCourses());
         try {
-            if (pageNumber === undefined) {
-                pageNumber = 1
+            if (currentPage === undefined) {
+                currentPage = 1
             }
-            const response = await axios.get('courses/GetCourses', { params: { pageNumber } });
+            const response = await axios.get('courses/GetCourses', { params: { currentPage } });
             const courses = [];
             const pageInfo = JSON.parse(response.headers.pagination);
             Object.keys(response.data).forEach((key, index) => {
@@ -60,7 +60,7 @@ export const subscribeToCourse = Id => {
     return async dispatch => {
         dispatch(startSubscribing());
         try {
-            await axios.post('/courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
+            await axios.post('courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
             dispatch(subscribtionSuccessfull());
         } catch (e) {
             dispatch(subscribeError(e));

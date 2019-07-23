@@ -2,22 +2,34 @@ import React from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import { Menu } from 'semantic-ui-react';
 
-const navigationItems = props => {
-    let links = (
-        <React.Fragment>
-            <NavigationItem link='/logout'>Logout</NavigationItem>
-            <NavigationItem link='/profile'>Profile</NavigationItem>
-        </React.Fragment>
-    );
+const renderLinks = (links) => {
+    return links.map((val, index) => {
+        return <NavigationItem key={index} link={val.to}>{val.label}</NavigationItem>
+    });
+}
 
+const navigationItems = props => {
+    const links = [];
+    
+    if (props.isAuth && props.userRole === 'admin') {
+        links.push({ to: '/admin', label: 'Admin' });
+        links.push({ to: '/logout', label: 'Logout' })
+    }
+    if (props.isAuth && props.userRole === 'student') {
+        links.push({ to: '/profile', label: 'Profile' });
+        links.push({ to: '/logout', label: 'Logout' });
+    }
+    if (props.isAuth && props.userRole !== 'admin') {
+        links.push({ to: '/logout', label: 'Logout' });
+    }
     if (!props.isAuth) {
-        links = <NavigationItem link='/auth'>Authorize</NavigationItem>
+        links.push({ to: '/auth', label: 'Authorize' });
     }
 
     return (
         <Menu.Menu>
             <NavigationItem exact={true} link='/'>Home</NavigationItem>
-            { links }
+            { renderLinks(links) }
         </Menu.Menu>
     );
 }

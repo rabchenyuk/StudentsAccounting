@@ -24,6 +24,8 @@ class Courses extends Component {
                                         subscribe={this.props.subscribe}
                                         courseId={val.id}
                                         confirmed={this.props.emailConfirmed}
+                                        isAuth={this.props.isAuth}
+                                        userRole={this.props.userRole}
                                     />
                                 );
                             })
@@ -32,7 +34,7 @@ class Courses extends Component {
                     {this.props.coursesList.length === 0 ? null :
                         <Pagination
                             currentPage={this.props.currentPage}
-                            loadCourses={this.props.fetchCourses}
+                            loadData={this.props.fetchCourses}
                             totalPages={this.props.totalPages} />
                     }
                 </Grid>
@@ -47,7 +49,9 @@ const mapStateToProps = state => {
         loading: state.courses.loading,
         totalPages: state.courses.totalPages,
         currentPage: state.courses.currentPage,
-        emailConfirmed: state.auth.emailConfirmed
+        emailConfirmed: state.auth.emailConfirmed,
+        isAuth: state.auth.token !== null,
+        userRole: state.auth.role
     }
 }
 

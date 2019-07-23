@@ -10,6 +10,7 @@ class Layout extends Component {
                     isConfirmed={this.props.isConfirmed}
                     isAuth={this.props.isAuth}
                     userName={this.props.userName}
+                    userRole={this.props.userRole}
                 />
                 <main>
                     {this.props.children}
@@ -23,7 +24,8 @@ const mapStateToProps = state => {
     return {
         isAuth: state.auth.token !== null,
         isConfirmed: state.auth.emailConfirmed,
-        userName: state.auth.userName
+        userName: state.auth.userName,
+        userRole: state.auth.role
     }
 }
 

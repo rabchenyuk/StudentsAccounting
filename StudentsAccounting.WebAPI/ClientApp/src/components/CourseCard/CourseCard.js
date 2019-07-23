@@ -9,11 +9,16 @@ const courseCard = props => {
                     <Card.Header>
                         {props.header}
                     </Card.Header>
-                    <Button
-                        disabled={!props.confirmed}
-                        content={props.confirmed ? 'Subscribe' : 'Confirm email'}
-                        primary
-                        onClick={() => props.subscribe(props.courseId)} />
+
+                    {
+                        props.isAuth && props.userRole !== 'admin' ?
+                            <Button
+                                disabled={!props.confirmed}
+                                content={props.confirmed ? 'Subscribe' : 'Confirm email'}
+                                primary
+                                onClick={() => props.subscribe(props.courseId)} /> : null
+                    }
+                    
                 </Card.Content>
             </Card>
         </Grid.Column>

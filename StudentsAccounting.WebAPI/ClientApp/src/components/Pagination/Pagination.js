@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react';
 
 const pagination = props => (
     <React.Fragment>
-        <Button disabled={props.currentPage === 1} onClick={() => props.loadCourses(props.currentPage - 1)}>Previous</Button>
+        <Button disabled={props.currentPage === 1} onClick={() => props.loadData(props.currentPage - 1)}>Previous</Button>
         {
             props.totalPages.map((val, index) => {
                 return <span
@@ -12,8 +12,9 @@ const pagination = props => (
                 </span>
             })
         }
-        <Button disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadCourses(props.currentPage + 1)}>Next</Button>
+        <Button disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadData(props.currentPage + 1)}>Next</Button>
     </React.Fragment>
+    //<a className='icon item' disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadData(props.currentPage + 1)}><i className='chevron right icon'></i>Next</a>
 );
 
 export default pagination;

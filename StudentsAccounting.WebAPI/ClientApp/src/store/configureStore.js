@@ -4,6 +4,8 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Auth from './reducers/Auth';
 import * as Courses from './reducers/Courses';
 import * as Profile from './reducers/Profile';
+import * as AdminStudents from './reducers/AdminReducers/AdminStudents';
+import * as AdminCourses from './reducers/AdminReducers/AdminCourses';
 
 //function loggerMiddleware(store) {
 //    return function (next) {
@@ -26,7 +28,9 @@ export default function configureStore (history, initialState) {
   const reducers = {
       auth: Auth.reducer,
       courses: Courses.reducer,
-      profile: Profile.reducer
+      profile: Profile.reducer,
+      adminStudents: AdminStudents.reducer,
+      adminCourses: AdminCourses.reducer,
   };
 
   const middleware = [

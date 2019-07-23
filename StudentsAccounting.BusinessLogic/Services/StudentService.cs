@@ -42,12 +42,12 @@ namespace StudentsAccounting.BusinessLogic.Services
                 || (s.LastName + ' ' + s.FirstName).ToLower().Equals(queryParams.Search.ToLower()));
             var columnsMap = new Dictionary<string, Expression<Func<User, object>>>
             {
-                ["Id"] = s => s.Id,
-                ["FirstName"] = s => s.FirstName,
-                ["LastName"] = s => s.LastName,
-                ["Age"] = s => s.Age,
-                ["Email"] = s => s.Email,
-                ["RegisteredDate"] = s => s.RegistrationDate
+                ["id"] = s => s.Id,
+                ["firstName"] = s => s.FirstName,
+                ["lastName"] = s => s.LastName,
+                ["age"] = s => s.Age,
+                ["email"] = s => s.Email,
+                ["registeredDate"] = s => s.RegistrationDate
             };
             students = students.ApplyOrdering(queryParams, columnsMap);
             var pagedStudents = await PagedList<User>.CreateAsync(students, queryParams.CurrentPage, queryParams.PageSize);
