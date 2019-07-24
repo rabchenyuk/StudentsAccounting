@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\components\UI\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -29,7 +29,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             var userToLogin = _mapper.Map<LoginDTO>(loginViewModel);
             var user = await _authService.Login(userToLogin);
             if (user == null)
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
+                return BadRequest("Invalid username or password");
             return Ok(new { token = user });
         }
 
@@ -47,9 +47,9 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                     new { userId = result.userId, code = result.code, password = registerViewModel.Password },
                     protocol: HttpContext.Request.Scheme);
                 await _authService.SendEmail(callbackUrl, registerViewModel.Login);
-                return Content("To finish registration check your email");
+                return Ok("To finish registration check your email");
             }
-            return BadRequest();
+            return BadRequest(user.Errors);
         }
 
         [HttpGet]

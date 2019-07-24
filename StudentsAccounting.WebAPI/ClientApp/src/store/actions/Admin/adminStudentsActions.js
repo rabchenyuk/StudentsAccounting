@@ -1,7 +1,7 @@
 ﻿import axios from '../../../axios';
 import { START_STUDENTS_FETCHING, FETCH_STUDENTS_FAIL, FETCH_STUDENTS_SUCCESS } from './adminTypes';
 
-export const fetchStudents = (sortBy, isSortAscending = false, search, currentPage) => {
+export const fetchStudents = (sortBy='', isSortAscending = false, search='', currentPage) => {
     if (currentPage === undefined) {
         currentPage = 1;
     }

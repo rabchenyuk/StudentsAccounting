@@ -19,7 +19,7 @@
             set { pageSize = (value > MAX_PAGE_SIZE) ? MAX_PAGE_SIZE : value; }
         }
 
-        public string OrderBy { get; set; }
+        public string SortBy { get; set; }
         public bool IsSortAscending { get; set; }
         public string Search { get; set; }
     }

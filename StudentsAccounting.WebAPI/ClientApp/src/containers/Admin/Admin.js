@@ -33,29 +33,38 @@ class Admin extends Component {
     sortCoursesBy = (val) => {
         this.props.fetchCourses(sortBy = val, isSortAscending, search, this.props.coursesCurrentPage);
     }
+
+    coursesInputHandler = (val) => {
+        this.props.fetchCourses(sortBy, isSortAscending, search = val, this.props.coursesCurrentPage);
+    }
+
+    studentsInputHandler = (val) => {
+        this.props.fetchStudents(sortBy, isSortAscending, search = val, this.props.studentsCurrentPage);
+    }
+
+    resetStudentsSearch = () => {
+        search = '';
+        sortBy = '';
+        this.props.fetchStudents();
+    }
+
+    resetCoursesSearch = () => {
+        search = '';
+        sortBy = '';
+        this.props.fetchCourses();
+    }
         
     render() {
-        console.log(this.props);
-        let studentsPagination = (
-            <Pagination
-                currentPage={this.props.studentsCurrentPage}
-                loadData={this.loadStudents}
-                totalPages={this.props.studentsTotalPages} />
-        );
-
-        let coursesPagination = (
-            <Pagination
-                currentPage={this.props.coursesCurrentPage}
-                loadData={this.loadCourses}
-                totalPages={this.props.coursesTotalPages} />
-        );
-
         let students = (
             <Students
                 clickHandler={this.sortStudentsBy}
                 currentPage={this.props.studentsCurrentPage}
                 totalPages={this.props.studentsTotalPages}
-                students={this.props.students} />
+                loadStudents={this.loadStudents}
+                students={this.props.students}
+                inputHandler={this.studentsInputHandler}
+                resetSearch={this.resetStudentsSearch}
+            />
         );
 
         let courses = (
@@ -63,19 +72,12 @@ class Admin extends Component {
                 clickHandler={this.sortCoursesBy}
                 currentPage={this.props.coursesCurrentPage}
                 totalPages={this.props.coursesTotalPages}
+                loadCourses={this.loadCourses}
                 courses={this.props.courses}
+                inputHandler={this.coursesInputHandler}
+                resetSearch={this.resetCoursesSearch}
             />
         );
-
-        if (this.props.students.length === 0) {
-            students = <h4>Loading list of students...</h4>;
-            studentsPagination = null;
-        }
-
-        if (this.props.courses.length === 0) {
-            courses = <h4>Loading list of courses...</h4>
-            coursesPagination = null;
-        }
 
         const panes = [
             {
@@ -83,7 +85,6 @@ class Admin extends Component {
                 pane:
                     <Tab.Pane key='tab1'>
                         {students}
-                        {studentsPagination}
                     </Tab.Pane>
             },
             {
@@ -91,7 +92,6 @@ class Admin extends Component {
                 pane:
                     <Tab.Pane key='tab2'>
                         {courses}
-                        {coursesPagination}
                     </Tab.Pane>
             },
         ];

@@ -1,7 +1,10 @@
 ﻿import React, { Component } from 'react';
-import { Icon, Menu, Table } from 'semantic-ui-react';
+import { Table, Input, Button } from 'semantic-ui-react';
+import Pagination from '../../Pagination/Pagination';
 
 export default class Courses extends Component {
+    state = { search: '' };
+
     getKeys = () => {
         return Object.keys(this.props.courses[0]);
     }
@@ -30,38 +33,51 @@ export default class Courses extends Component {
         })
     }
 
+    inputHandler = () => {
+        this.props.inputHandler(this.state.search);
+    }
+
+    handleInputChange = e => {
+        this.setState({ search: e.target.value });
+    }
+
     render() {
-        return (
+        let tabContent = (
             <Table celled>
                 <Table.Header>
                     <Table.Row>
-                        {this.getHeader()}
+                        {this.props.courses.length === 0 ? null : this.getHeader()}
                     </Table.Row>
                 </Table.Header>
-
                 <Table.Body>
-                    {this.renderStudentsTab()}
+                    {this.props.courses.length === 0 ? null : this.renderStudentsTab()}
                 </Table.Body>
-
                 <Table.Footer>
                     <Table.Row>
                         <Table.HeaderCell colSpan='3'>
-                            <Menu floated='right' pagination>
-                                <Menu.Item as='a' icon>
-                                    <Icon name='chevron left' />
-                                </Menu.Item>
-                                <Menu.Item as='a'>1</Menu.Item>
-                                <Menu.Item as='a'>2</Menu.Item>
-                                <Menu.Item as='a'>3</Menu.Item>
-                                <Menu.Item as='a'>4</Menu.Item>
-                                <Menu.Item as='a' icon>
-                                    <Icon name='chevron right' />
-                                </Menu.Item>
-                            </Menu>
+                            <Pagination
+                                currentPage={this.props.currentPage}
+                                loadData={this.props.loadCourses}
+                                totalPages={this.props.totalPages} />
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Footer>
             </Table>
+        );
+
+        if (this.props.courses.length === 0) {
+            tabContent = <h1>No results...</h1>;
+        }
+
+        return (
+            <React.Fragment>
+                <Input
+                    action={{ icon: 'search', onClick: () => this.inputHandler() }}
+                    onChange={this.handleInputChange}
+                    placeholder='Search...' />
+                <Button onClick={this.props.resetSearch}>Reset</Button>
+                {tabContent}
+            </React.Fragment>
         );
     }
 }

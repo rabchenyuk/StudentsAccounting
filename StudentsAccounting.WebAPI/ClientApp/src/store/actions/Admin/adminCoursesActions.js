@@ -1,7 +1,7 @@
 ﻿import axios from '../../../axios';
 import { START_COURSES_FETCHING, FETCH_COURSES_SUCCESS, FETCH_COURSES_FAIL } from './adminTypes';
 
-export const fetchCourses = (sortBy, isSortAscending = false, search, currentPage) => {
+export const fetchCourses = (sortBy='', isSortAscending = false, search='', currentPage) => {
     if (currentPage === undefined) {
         currentPage = 1;
     }

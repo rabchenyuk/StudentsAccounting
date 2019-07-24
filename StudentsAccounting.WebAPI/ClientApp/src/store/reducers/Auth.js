@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../actions/Auth/authTypes';
+import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START, REGISTER_SUCCESS, REGISTER_FAIL, REGISTER_START } from '../actions/Auth/authTypes';
 
 const initialState = {
     userId: null,
@@ -13,14 +13,15 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case AUTH_START:
-            return { ...state, loading: action.loading }
+            return { ...state, loading: action.loading, error: null }
         case AUTH_SUCCESS:
             return {
                 ...state,
                 token: action.token,
                 role: action.role,
                 emailConfirmed: action.emailConfirmed,
-                userName: action.userName
+                userName: action.userName,
+                error: null
             }
         case AUTH_LOGOUT:
             return {
@@ -29,10 +30,29 @@ export const reducer = (state = initialState, action) => {
                 role: null,
                 emailConfirmed: null,
                 userName: null,
-                userId: null
+                userId: null,
+                error: null
             }
         case AUTH_FAIL:
             return { ...state, error: action.error, loading: action.loading }
+        case REGISTER_START:
+            return {
+                ...state,
+                loading: action.loading,
+                error: null
+            }
+        case REGISTER_SUCCESS:
+            return {
+                ...state,
+                loading: action.loading,
+                error: null
+            }
+        case REGISTER_FAIL:
+            return {
+                ...state,
+                loading: action.loading,
+                error: action.error
+            }
         default:
             return state;
     }

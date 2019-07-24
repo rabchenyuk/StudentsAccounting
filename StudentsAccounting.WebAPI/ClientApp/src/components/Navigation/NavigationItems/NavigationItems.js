@@ -19,7 +19,7 @@ const navigationItems = props => {
         links.push({ to: '/profile', label: 'Profile' });
         links.push({ to: '/logout', label: 'Logout' });
     }
-    if (props.isAuth && props.userRole !== 'admin') {
+    if (props.isAuth && props.userRole === 'No role') {
         links.push({ to: '/logout', label: 'Logout' });
     }
     if (!props.isAuth) {

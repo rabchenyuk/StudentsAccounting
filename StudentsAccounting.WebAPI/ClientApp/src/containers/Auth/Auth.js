@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
-import { auth } from '../../store/actions/Auth/authActions';
+import { auth, register } from '../../store/actions/Auth/authActions';
+import { Button, Form, Message } from 'semantic-ui-react';
 
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -9,9 +9,6 @@ function validateEmail(email) {
 }
 
 class Auth extends Component {
-    componentDidMount() {
-        console.log(this.props);
-    }
     state = { 
         formControls: {
             email: {
@@ -45,17 +42,15 @@ class Auth extends Component {
         e.preventDefault();
         this.props.auth(
             this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            true
+            this.state.formControls.password.value
         );
     }
 
     registerHandler = (e) => {
         e.preventDefault();
-        this.props.auth(
+        this.props.register(
             this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            false
+            this.state.formControls.password.value
         );
     }
 
@@ -63,18 +58,16 @@ class Auth extends Component {
         return Object.keys(this.state.formControls).map((controlName, index) => {
             const control = this.state.formControls[controlName];
             return (
-                <Input
-                    key={controlName + index} 
-                    type={control.type}
-                    value={control.value}
-                    valid={control.valid}
-                    touched={control.touched}
+                <Form.Input
+                    key={controlName + index}
                     label={control.label}
-                    shouldValidate={!!control.validation}
-                    errorMessage={control.errorMessage}
-                    onChange={event => this.onChangeHandler(event, controlName)} />
-            )
-        })
+                    type={control.type}
+                    onChange={event => this.onChangeHandler(event, controlName)}
+                    error={!this.state.formControls[controlName].valid
+                            && this.state.formControls[controlName].touched ? this.state.formControls[controlName].errorMessage : null}
+                />
+            );
+        });
     }
 
     validateControl(value, validation) {
@@ -100,22 +93,23 @@ class Auth extends Component {
         control.value = event.target.value;
         control.touched = true;
         control.valid = this.validateControl(control.value, control.validation);
-        formControls[controlName] = control
+        formControls[controlName] = control;
         this.setState({formControls});
     }
 
     render() {
-        const oldForm = (
-            <form>
-                {this.renderInputs()}
-                <button onClick={this.loginHandler}>Login</button>
-                <button onClick={this.registerHandler}>Register</button>
-            </form>
-        );
         return (
-            <React.Fragment>
-                {oldForm}
-            </React.Fragment>
+            <Form error={this.props.error != null}>
+                {this.renderInputs()}
+                <Message
+                    error
+                    header='Someting went wrong'
+                    content={this.props.error}
+                />
+                <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
+                <div>Don't have account? Register</div>
+                <Button onClick={this.registerHandler}>Register</Button>
+            </Form>
         );
     }
 };
@@ -128,7 +122,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        auth: (email, password, isLoggedIn) => dispatch(auth(email, password, isLoggedIn))
+        auth: (email, password) => dispatch(auth(email, password)),
+        register: (email, password) => dispatch(register(email, password))
     }
 }
 

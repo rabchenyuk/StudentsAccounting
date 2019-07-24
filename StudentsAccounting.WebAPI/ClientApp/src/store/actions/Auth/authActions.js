@@ -1,17 +1,13 @@
 import axios from '../../../axios';
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../Auth/authTypes';
+import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START, REGISTER_START, REGISTER_FAIL, REGISTER_SUCCESS } from '../Auth/authTypes';
 import jwt from 'jsonwebtoken';
 
-export const auth = (login, password, isLoggedIn) => {
+export const auth = (login, password) => {
     return async dispatch => {
         dispatch(authStart());
         const authData = { login, password };
-        let url = 'auth/register';
-        if (isLoggedIn) {
-            url = 'auth/login';
-        }
         try {
-            const response = await axios.post(url, authData);
+            const response = await axios.post('auth/login', authData);
             const data = response.data;
             const decoded = jwt.decode(data.token);
             const userCreds = {
@@ -25,8 +21,44 @@ export const auth = (login, password, isLoggedIn) => {
             dispatch(authSuccess(userCreds));
             dispatch(autoLogout(decoded.exp));
         } catch (e) {
-            dispatch(authFail(e));
+            dispatch(authFail(e.response.data));
         }
+    }
+}
+
+export const register = (login, password) => {
+    return async dispatch => {
+        dispatch(registerStart());
+        const registerData = { login, password };
+        try {
+            await axios.post('auth/register', registerData);
+            dispatch(registerSuccess());
+            dispatch(auth(login, password));
+        } catch (e) {
+            dispatch(registerFail(e.response.data[0].description));
+        }
+    }
+}
+
+export const registerSuccess = () => {
+    return {
+        type: REGISTER_SUCCESS,
+        loading: false
+    }
+}
+
+export const registerStart = () => {
+    return {
+        type: REGISTER_START,
+        loading: true
+    }
+}
+
+export const registerFail = (e) => {
+    return {
+        type: REGISTER_FAIL,
+        loading: false,
+        error: e
     }
 }
 
@@ -38,7 +70,7 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = userCreds => {
+export const authSuccess = (userCreds) => {
     return {
         type: AUTH_SUCCESS,
         loading: false,

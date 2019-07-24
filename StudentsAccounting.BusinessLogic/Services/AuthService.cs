@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
 using StudentsAccounting.BusinessLogic.DTO.UserDTO;
+using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -49,9 +51,10 @@ namespace StudentsAccounting.BusinessLogic.Services
         {
             var userToCreate = _mapper.Map<User>(registerDTO);
             userToCreate.UserName = registerDTO.Login;
-            var user = await _userManager.CreateAsync(userToCreate, registerDTO.Password);
-            currentUser = userToCreate;
-            return user;
+            var res = await _userManager.CreateAsync(userToCreate, registerDTO.Password);
+            if (res.Succeeded)
+                currentUser = userToCreate;
+            return res;
         }
 
         public async Task<(string userId, string code)> GenerateToken()
