@@ -94,7 +94,7 @@ class Auth extends Component {
         control.touched = true;
         control.valid = this.validateControl(control.value, control.validation);
         formControls[controlName] = control;
-        this.setState({formControls});
+        this.setState({ formControls });
     }
 
     render() {
