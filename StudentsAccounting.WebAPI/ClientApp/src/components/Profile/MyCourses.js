@@ -1,7 +1,27 @@
-﻿import React from 'react';
+﻿import React, { Component } from 'react';
+import CourseCard from '../CourseCard/CourseCard';
 
-const myCourses = props => (
-    <h1>My courses</h1>
-);
+class MyCourses extends Component {
+    componentDidMount() {
+        this.props.getUserCourses();
+    }
 
-export default myCourses;
+    render() {
+        const coursesCards = this.props.userCourses.map((val, index) => {
+            return (
+                <CourseCard
+                    key={val + index}
+                    header={val.name}
+                    startDate={val.startDate}
+                />)
+        });
+
+        return (
+            <React.Fragment>
+                {this.props.userCourses.length === 0 ? <h1>Loading courses</h1> : coursesCards}
+            </React.Fragment>
+        );
+    }
+}
+
+export default MyCourses;

@@ -54,8 +54,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\components\UI\" />
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\ASP.NET%2528Core%2529\StudentsAccounting\StudentsAccounting\StudentsAccounting.WebAPI\ClientApp\src\components\Navigation\MenuToggle\MenuToggle.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

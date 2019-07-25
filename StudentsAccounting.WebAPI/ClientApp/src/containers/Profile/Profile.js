@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUserData } from '../../store/actions/Profile/profileActions';
+import { fetchUserData, fetchUserCourses } from '../../store/actions/Profile/profileActions';
 import ProfileInfo from '../../components/Profile/ProfileInfo';
 import MyCourses from '../../components/Profile/MyCourses';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
@@ -18,6 +18,10 @@ class Profile extends Component {
     handleShowClick = () => this.setState({ visible: true })
     handleSidebarHide = () => this.setState({ visible: false })
 
+    getUserCourses = (token) => {
+        this.props.getUserCourses(token);
+    }
+
     render() {
         return (
             <div>
@@ -30,10 +34,20 @@ class Profile extends Component {
                     <Route
                         exact
                         path={this.props.match.path}
-                        component={ProfileInfo} />
+                        render={() => (<ProfileInfo
+                            photoUrl={this.props.photoUrl}
+                            registered={this.props.registered}
+                            firstName={this.props.firstName}
+                            lastName={this.props.lastName}
+                            age={this.props.age}
+                            gender={this.props.gender}
+                        />)} />
                     <Route
                         path={this.props.match.path + '/my-courses'}
-                        component={MyCourses} />
+                        render={() => <MyCourses
+                            getUserCourses={() => this.getUserCourses(this.props.token)}
+                            userCourses={this.props.userCourses}
+                        />} />
                     <Route
                         path={this.props.match.path + '/update-profile'}
                         component={UpdateProfile} />
@@ -51,13 +65,15 @@ const mapStateToProps = state => {
         photoUrl: state.profile.photoUrl,
         gender: state.profile.gender,
         token: state.auth.token,
-        registered: state.profile.registered
+        registered: state.profile.registered,
+        userCourses: state.profile.userCourses
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getProfile: token => dispatch(fetchUserData(token))
+        getProfile: token => dispatch(fetchUserData(token)),
+        getUserCourses: token => dispatch(fetchUserCourses(token))
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using StudentsAccounting.BusinessLogic.DTO.CourseDTO;
 using StudentsAccounting.BusinessLogic.Helpers;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Interfaces
@@ -10,5 +11,6 @@ namespace StudentsAccounting.BusinessLogic.Interfaces
         Task<PageInfo<CourseDTO>> GetAllCourses(CoursesPagingDTO paging);
         Task<PageInfo<CourseForAdminDTO>> GetAllCoursesForAdmin(QueryParamsDTO queryParams);
         Task<Response> RegisterToCourse(int userId, int courseId);
+        IEnumerable<CourseDTO> GetStudentsCourses(int userId);
     }
 }

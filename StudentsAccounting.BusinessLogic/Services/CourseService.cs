@@ -85,6 +85,14 @@ namespace StudentsAccounting.BusinessLogic.Services
             return _mapper.Map<CourseDTO>(course);
         }
 
+        public IEnumerable<CourseDTO> GetStudentsCourses(int userId)
+        {
+            var studentsCourses = _usersCoursesRepo.GetAllQueryable().Where(c => c.UserId == userId).ToList();
+            if (studentsCourses.Count() == 0)
+                return null;
+            return _mapper.Map<IEnumerable<CourseDTO>>(studentsCourses);
+        }
+
         public async Task<Response> RegisterToCourse(int userId, int courseId)
         {
             var res = new Response();

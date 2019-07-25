@@ -69,5 +69,15 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                 return Ok(res.Information);
             return BadRequest(res.Information);
         }
+
+        [Authorize(Roles = "student")]
+        [HttpGet("getMyCourses")]
+        public IActionResult GetStudentsCourses()
+        {
+            var courses = _courseService.GetStudentsCourses(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            if (courses == null)
+                return BadRequest("You haven't subscribed to any course yet");
+            return Ok(_mapper.Map<IEnumerable<CourseViewModel>>(courses));
+        }
     }
 }

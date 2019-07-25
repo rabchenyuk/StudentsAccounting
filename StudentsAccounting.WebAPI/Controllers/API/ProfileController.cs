@@ -21,7 +21,10 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         private readonly IBackgroundJobClient _backgroundJob;
         private readonly PhotoSettings _photoSettings;
 
-        public ProfileController(IProfileService profile, IMapper mapper, IOptions<PhotoSettings> options, IBackgroundJobClient backgroundJob)
+        public ProfileController(IProfileService profile,
+                                 IMapper mapper,
+                                 IOptions<PhotoSettings> options,
+                                 IBackgroundJobClient backgroundJob)
         {
             _profile = profile;
             _mapper = mapper;
@@ -39,7 +42,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             return Ok(_mapper.Map<UserViewModel>(user));
         }
 
-        [Authorize]
+        [Authorize(Roles = "student")]
         [HttpPut("{userId}/[action]")]
         public async Task<IActionResult> UpdateProfileInfo(int userId, [FromBody]UserViewModel userInfo)
         {
@@ -52,7 +55,7 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             return Ok(_mapper.Map<UserViewModel>(user));
         }
 
-        [Authorize]
+        [Authorize(Roles = "student")]
         [HttpPost("{userId}/setPhoto")]
         public async Task<IActionResult> SetProfilePhoto(int userId, [FromForm]PhotoViewModel photo)
         {
