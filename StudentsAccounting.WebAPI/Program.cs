@@ -31,7 +31,7 @@ namespace StudentsAccounting.WebAPI
                             LastName = "Admin",
                             Age = 38,
                             EmailConfirmed = true,
-                            IsMale = true,
+                            Gender = "Male",
                             RegistrationDate = new DateTime(2017, 9, 18)
                         };
                         userManager.CreateAsync(user, "12345Admin")

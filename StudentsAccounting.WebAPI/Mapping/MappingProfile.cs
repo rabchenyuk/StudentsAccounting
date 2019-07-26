@@ -24,7 +24,7 @@ namespace StudentsAccounting.WebAPI.Mapping
             CreateMap<UserDTO, UserViewModel>();
             CreateMap<UserViewModel, UserDTO>();
             CreateMap<UserWithCoursesDTO, UserWithCoursesViewModel>();
-            CreateMap<PhotoViewModel, PhotoDTO>();
+            CreateMap<UpdateUserProfileViewModel, UpdateUserProfileDTO>();
         }
     }
 }

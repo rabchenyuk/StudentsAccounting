@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUserData, fetchUserCourses } from '../../store/actions/Profile/profileActions';
+import { fetchUserData, fetchUserCourses, updateProfileInfo } from '../../store/actions/Profile/profileActions';
 import ProfileInfo from '../../components/Profile/ProfileInfo';
 import MyCourses from '../../components/Profile/MyCourses';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
@@ -50,7 +50,7 @@ class Profile extends Component {
                         />} />
                     <Route
                         path={this.props.match.path + '/update-profile'}
-                        component={UpdateProfile} />
+                        render={() => <UpdateProfile {...this.props} />} />
                 </Switch>
             </div>
         );
@@ -73,7 +73,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getProfile: token => dispatch(fetchUserData(token)),
-        getUserCourses: token => dispatch(fetchUserCourses(token))
+        getUserCourses: token => dispatch(fetchUserCourses(token)),
+        updateProfileInfo: (token, userData) => dispatch(updateProfileInfo(token, userData))
     }
 }
 

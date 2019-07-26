@@ -1,5 +1,6 @@
 ﻿import axios from '../../../axios';
-import { PROFILE_START, PROFILE_SUCCESS, PROFILE_ERROR, START_FETCHING_USER_COURSES, FETCHING_USER_COURSES_SUCCESS, USER_COURSES_ERROR } from './profileTypes';
+import jwt from 'jsonwebtoken';
+import { PROFILE_START, PROFILE_SUCCESS, PROFILE_ERROR, START_FETCHING_USER_COURSES, FETCHING_USER_COURSES_SUCCESS, USER_COURSES_ERROR, START_UPDATING, UPDATE_PROFILE_ERROR } from './profileTypes';
 
 export const fetchUserData = token => {
     return async dispatch => {
@@ -33,6 +34,42 @@ export const fetchUserCourses = token => {
     }
 }
 
+export const updateProfileInfo = (token, userData) => {
+    const decoded = jwt.decode(token);
+    const ageValue = new Date().getFullYear() - userData.age;
+    let dataFormBody = new FormData();
+    dataFormBody.set('firstName', userData.firstName);
+    dataFormBody.set('lastName', userData.lastName);
+    dataFormBody.set('age', ageValue);
+    dataFormBody.set('gender', userData.gender);
+    dataFormBody.set('file', userData.file);
+    console.log(dataFormBody);
+    return async dispatch => {
+        dispatch(startUpdating());
+        try {
+            const res = await axios.put(`profile/${decoded.nameid}/UpdateProfileInfo`, dataFormBody, { 'headers': { 'Authorization': 'Bearer ' + token, 'Content-Type': 'multipart/form-data' } });
+            dispatch(fetchProfileSuccess(res.data));
+        } catch (e) {
+            dispatch(updateProfileError(e));
+        }
+    }
+}
+
+export const updateProfileError = e => {
+    return {
+        type: UPDATE_PROFILE_ERROR,
+        loading: false,
+        updateProfileError: e
+    }
+}
+
+export const startUpdating = () => {
+    return {
+        type: START_UPDATING,
+        loading: true
+    }
+}
+
 export const startFetchingUserCourses = () => {
     return {
         type: START_FETCHING_USER_COURSES,
@@ -63,7 +100,7 @@ export const fetchProfileSuccess = userData => {
         lastName: userData.lastName,
         age: userData.age,
         photoUrl: userData.photoUrl,
-        gender: userData.isMale ? "Male" : "Female",
+        gender: userData.gender,
         registered: userData.registrationDate
     }
 }

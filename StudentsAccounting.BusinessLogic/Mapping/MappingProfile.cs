@@ -21,7 +21,7 @@ namespace StudentsAccounting.BusinessLogic.Mapping
                     FirstName = user.User.FirstName,
                     LastName = user.User.LastName,
                     Age = user.User.Age,
-                    IsMale = user.User.IsMale,
+                    Gender = user.User.Gender,
                     PhotoUrl = user.User.PhotoUrl,
                     RegistrationDate = user.User.RegistrationDate
                 })));

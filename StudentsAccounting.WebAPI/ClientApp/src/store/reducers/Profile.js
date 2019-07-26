@@ -1,8 +1,17 @@
-﻿import { PROFILE_SUCCESS, PROFILE_START, PROFILE_ERROR, START_FETCHING_USER_COURSES, FETCHING_USER_COURSES_SUCCESS, USER_COURSES_ERROR } from '../actions/Profile/profileTypes';
+﻿import {
+    PROFILE_SUCCESS,
+    PROFILE_START,
+    PROFILE_ERROR,
+    START_FETCHING_USER_COURSES,
+    FETCHING_USER_COURSES_SUCCESS,
+    USER_COURSES_ERROR, START_UPDATING,
+    UPDATE_PROFILE_ERROR
+} from '../actions/Profile/profileTypes';
 
 const initialState = {
     loading: false,
     profileError: null,
+    updateProfileError: null,
     userCoursesError: null,
     firstName: null,
     lastName: null,
@@ -53,6 +62,17 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 loading: action.loading,
                 userCoursesError: action.userCoursesError
+            }
+        case START_UPDATING:
+            return {
+                ...state,
+                loading: action.loading
+            }
+        case UPDATE_PROFILE_ERROR:
+            return {
+                ...state,
+                loading: action.loading,
+                updateProfileError: action.updateProfileError
             }
         default:
             return state;

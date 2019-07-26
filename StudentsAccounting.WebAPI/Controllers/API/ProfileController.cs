@@ -44,35 +44,23 @@ namespace StudentsAccounting.WebAPI.Controllers.API
 
         [Authorize(Roles = "student")]
         [HttpPut("{userId}/[action]")]
-        public async Task<IActionResult> UpdateProfileInfo(int userId, [FromBody]UserViewModel userInfo)
+        public async Task<IActionResult> UpdateProfileInfo(int userId, [FromForm]UpdateUserProfileViewModel userInfo)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            var userInfoForUpdate = _mapper.Map<UserDTO>(userInfo);
+            if (userInfo.File != null)
+            {
+                if (userInfo.File.Length > _photoSettings.MaxBytes)
+                    return BadRequest("Maximum file size exceeded");
+
+                if (!_photoSettings.IsSupported(userInfo.File.FileName))
+                    return BadRequest("Invalid file type");
+            }
+            var userInfoForUpdate = _mapper.Map<UpdateUserProfileDTO>(userInfo);
             var user = await _profile.UpdateProfileInfo(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), userInfoForUpdate);
             if (user == null)
                 return BadRequest("Something went wrong");
             return Ok(_mapper.Map<UserViewModel>(user));
-        }
-
-        [Authorize(Roles = "student")]
-        [HttpPost("{userId}/setPhoto")]
-        public async Task<IActionResult> SetProfilePhoto(int userId, [FromForm]PhotoViewModel photo)
-        {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-            if (photo.File != null)
-            {
-                if (photo.File.Length > _photoSettings.MaxBytes)
-                    return BadRequest("Maximum file size exceeded");
-
-                if (!_photoSettings.IsSupported(photo.File.FileName))
-                    return BadRequest("Invalid file type");
-            }
-            var res = await _profile.SetPhoto(userId, _mapper.Map<PhotoDTO>(photo));
-            if (!res.Successful)
-                return BadRequest(res.Information);
-            return Ok(res.Information);
         }
     }
 }

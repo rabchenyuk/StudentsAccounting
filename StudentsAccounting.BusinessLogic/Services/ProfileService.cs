@@ -30,50 +30,27 @@ namespace StudentsAccounting.BusinessLogic.Services
             return _mapper.Map<UserDTO>(userInfo);
         }
 
-        public async Task<Response> SetPhoto(int userId, PhotoDTO photo)
+        public async Task<UserDTO> UpdateProfileInfo(int userId, UpdateUserProfileDTO userInfo)
         {
-            var res = new Response();
-            res.Successful = false;
-            if (photo.File != null)
+            string fileName = null;
+            if (userInfo.File != null)
             {
                 var photoFolderPath = Path.Combine(_host.WebRootPath, "UserProfilePhoto");
                 if (!Directory.Exists(photoFolderPath))
                     Directory.CreateDirectory(photoFolderPath);
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.File.FileName);
+                fileName = Guid.NewGuid().ToString() + Path.GetExtension(userInfo.File.FileName);
                 var filePath = Path.Combine(photoFolderPath, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await photo.File.CopyToAsync(stream);
-                }
-                var usersProfile = await _userRepo.GetByIdAsync(userId);
-                usersProfile.PhotoUrl = fileName;
-                try
-                {
-                    _userRepo.Edit(usersProfile);
-                    res.Successful = true;
-                    res.Information = "You have successfully added photo";
-                }
-                catch(Exception e)
-                {
-                    res.Successful = false;
-                    res.Information = e.Message;
+                    await userInfo.File.CopyToAsync(stream);
                 }
             }
-            else
-            {
-                res.Successful = false;
-                res.Information = "Something went wrong";
-            }
-            return res;
-        }
-
-        public async Task<UserDTO> UpdateProfileInfo(int userId, UserDTO userInfo)
-        {
             var user = await _userRepo.GetByIdAsync(userId);
             user.FirstName = userInfo.FirstName;
             user.LastName = userInfo.LastName;
             user.Age = userInfo.Age;
-            user.IsMale = userInfo.IsMale;
+            user.Gender = userInfo.Gender;
+            user.PhotoUrl = fileName;
             try
             {
                 _userRepo.Edit(user);
