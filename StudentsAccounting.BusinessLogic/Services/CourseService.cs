@@ -54,13 +54,10 @@ namespace StudentsAccounting.BusinessLogic.Services
             var courses = _repo.GetAllQueryable();
             if (!string.IsNullOrEmpty(queryParams.Search))
                 courses = courses.Where(s => s.CourseName.ToLower().Equals(queryParams.Search.ToLower()));
-            var columnsMap = new Dictionary<string, Expression<Func<Course, object>>>
-            {
-                ["id"] = s => s.Id,
-                ["courseName"] = s => s.CourseName,
-                ["startDate"] = s => s.StartDate
-            };
-            courses.ApplyOrdering(queryParams, columnsMap);
+            if (queryParams.SortBy == "id")
+                courses = courses.OrderBy(c => c.Id);
+            if (queryParams.SortBy == "courseName")
+                courses = courses.OrderBy(c => c.CourseName);
             var pagedCourses = await PagedList<Course>.CreateAsync(courses, queryParams.CurrentPage, queryParams.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseForAdminDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseForAdminDTO>
@@ -88,18 +85,16 @@ namespace StudentsAccounting.BusinessLogic.Services
         public IEnumerable<CourseDTO> GetStudentsCourses(int userId)
         {
             var studentsCourses = _usersCoursesRepo.GetAllQueryable().Where(c => c.UserId == userId).ToList();
-            if (studentsCourses.Count() == 0)
-                return null;
             return _mapper.Map<IEnumerable<CourseDTO>>(studentsCourses);
         }
 
-        public async Task<Response> RegisterToCourse(int userId, int courseId)
+        public async Task<Response> RegisterToCourse(int userId, int courseId, DateTime startDate)
         {
             var res = new Response();
             var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId);
             if (userInCourse == null)
             {
-                var userCourse = new UsersCourses { UserId = userId, CourseId = courseId };
+                var userCourse = new UsersCourses { UserId = userId, CourseId = courseId, StartDate = startDate };
                 try
                 {
                     _usersCoursesRepo.Add(userCourse);

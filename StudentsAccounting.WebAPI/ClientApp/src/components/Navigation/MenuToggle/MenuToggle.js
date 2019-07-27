@@ -7,7 +7,6 @@ const menuToggle = props => {
         <React.Fragment>
             <Button disabled={props.visible} onClick={props.handleShowClick}>
                 <Icon name='server' />
-                Menu
             </Button>
             <Sidebar
                 as={Menu}
@@ -17,16 +16,14 @@ const menuToggle = props => {
                 onHide={props.handleSidebarHide}
                 vertical
                 visible={props.visible}>
-                <React.Fragment>
-                    <Link onClick={props.handleSidebarHide} className='item' to={props.match.path + '/my-courses'}>
-                        <Icon name='tasks' />
-                        My courses
-                    </Link>
-                    <Link onClick={props.handleSidebarHide} className='item' to={props.match.path + '/update-profile'}>
-                        <Icon name='edit' />
-                        Update profile
-                    </Link>
-                </React.Fragment>
+                <Link onClick={props.handleSidebarHide} className='item' to={props.match.path + '/my-courses'}>
+                    <Icon name='tasks' />
+                    My courses
+                </Link>
+                <Link onClick={props.handleSidebarHide} className='item' to={props.match.path + '/update-profile'}>
+                    <Icon name='edit' />
+                    Update profile
+                </Link>
             </Sidebar>
         </React.Fragment>
     );

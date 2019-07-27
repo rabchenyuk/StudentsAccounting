@@ -1,6 +1,6 @@
 import React from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
-import { Menu } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 const renderLinks = (links) => {
     return links.map((val, index) => {
@@ -27,10 +27,10 @@ const navigationItems = props => {
     }
 
     return (
-        <Menu.Menu>
+        <Container>
             <NavigationItem exact={true} link='/'>Home</NavigationItem>
-            { renderLinks(links) }
-        </Menu.Menu>
+            {renderLinks(links)}
+        </Container>
     );
 }
 

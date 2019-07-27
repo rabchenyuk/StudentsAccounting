@@ -18,7 +18,8 @@ class MyCourses extends Component {
 
         return (
             <React.Fragment>
-                {this.props.userCourses.length === 0 ? <h1>Loading courses</h1> : coursesCards}
+                {this.props.loading ? <h1>Loading...</h1> : null}
+                {!this.props.loading && this.props.userCourses.length === 0 ? <h1>You haven't subscribed to any course</h1> : coursesCards}
             </React.Fragment>
         );
     }

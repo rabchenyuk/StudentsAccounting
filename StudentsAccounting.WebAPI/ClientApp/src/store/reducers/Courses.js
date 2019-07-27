@@ -2,7 +2,8 @@
 
 const initialState = {
     courses: [],
-    loading: false,
+    coursesLoading: false,
+    subscribeLoading: false,
     error: null,
     totalPages: [],
     currentPage: null
@@ -13,36 +14,37 @@ export const reducer = (state = initialState, action) => {
         case COURSES_START:
             return {
                 ...state,
-                loading: action.loading,
+                coursesLoading: action.loading,
             }
         case COURSES_SUCCESS:
             return {
                 ...state,
                 courses: action.courses,
                 totalPages: action.totalPages,
-                currentPage: action.currentPage
+                currentPage: action.currentPage,
+                coursesLoading: action.loading
             }
         case COURSES_ERROR:
             return {
                 ...state,
                 error: action.error,
-                loading: action.loading
+                coursesLoading: action.loading
             }
         case START_SUBSCRIBING:
             return {
                 ...state,
-                loading: action.loading
+                subscribeLoading: action.loading
             }
         case SUBSCRIBE_ERROR:
             return {
                 ...state,
-                loading: action.loading,
+                subscribeLoading: action.loading,
                 error: action.error
             }
         case SUBSCRIPTION_SUCCESSFULL:
             return {
                 ...state,
-                loading: action.loading
+                subscribeLoading: action.loading
             }
         default:
             return state;

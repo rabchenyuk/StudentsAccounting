@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { fetchCourses, subscribeToCourse } from '../../store/actions/Courses/coursesActions';
 import CourseCard from '../../components/CourseCard/CourseCard';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Container } from 'semantic-ui-react';
 import Pagination from '../../components/Pagination/Pagination';
 
 class Courses extends Component {
@@ -12,15 +12,16 @@ class Courses extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <Grid columns={3}>
-                    <Grid.Row>
-                        {this.props.coursesList.length === 0 ? <h4>Loading list of courses...</h4> :
+            <Container>
+                <Grid verticalAlign='middle' columns={2}>
+                    <Grid.Row centered>
+                        {this.props.loading? <h4>Loading list of courses...</h4> :
                             this.props.coursesList.map((val, index) => {
                                 return (
                                     <CourseCard
                                         key={index}
                                         header={val.name}
+                                        desc={this.props.coursesList[index].description}
                                         subscribe={this.props.subscribe}
                                         courseId={val.id}
                                         confirmed={this.props.emailConfirmed}
@@ -31,14 +32,21 @@ class Courses extends Component {
                             })
                         }
                     </Grid.Row>
-                    {this.props.coursesList.length === 0 ? null :
-                        <Pagination
-                            currentPage={this.props.currentPage}
-                            loadData={this.props.fetchCourses}
-                            totalPages={this.props.totalPages} />
-                    }
                 </Grid>
-            </React.Fragment>
+                {this.props.loading ? null :
+                    <Container>
+                        <Grid>
+                            <Grid.Row centered>
+                                <Pagination
+                                    currentPage={this.props.currentPage}
+                                    loadData={this.props.fetchCourses}
+                                    totalPages={this.props.totalPages} />
+                            </Grid.Row>
+
+                        </Grid>
+                    </Container>
+                }
+            </Container>
         );
     }
 }
@@ -46,7 +54,7 @@ class Courses extends Component {
 const mapStateToProps = state => {
     return {
         coursesList: state.courses.courses,
-        loading: state.courses.loading,
+        loading: state.courses.coursesLoading,
         totalPages: state.courses.totalPages,
         currentPage: state.courses.currentPage,
         emailConfirmed: state.auth.emailConfirmed,

@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
-import { Form, Button, Input, Icon } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import { Form, Button, Grid } from 'semantic-ui-react';
 import Select from '../UI/Select/Select';
 
 const createControl = (config, validation) => {
@@ -56,7 +57,8 @@ class UpdateProfile extends Component {
         formControls: createFormControls(),
         fileControl: createFileControl(),
         genderValue: 'Male',
-        birthValue: 1980
+        birthValue: '',
+        submitted: false
     }
 
     renderInputs = () => {
@@ -77,24 +79,19 @@ class UpdateProfile extends Component {
 
     renderFileInput = () => {
         return Object.keys(this.state.fileControl).map((controlName, index) => {
-            const control = this.state.fileControl[controlName];
             const errorMsg = <span style={{color: 'red'}}>Not supported format. Only .jpeg, .jpg, .png</span>
             return (
-                <Form.Field key={index}>
-                    <Button as="label" htmlFor="file" type="button">
-                        <Button.Content hidden>Choose a File</Button.Content>
-                    </Button>
+                <div key={index}>
                     <input
                         type="file"
                         id="file"
-                        hidden
                         onChange={e => this.fileChange(e, controlName)}
                     />
                     {
                         !this.state.fileControl[controlName].valid
                             && this.state.fileControl[controlName].touched ? errorMsg : null
                     }
-                </Form.Field>
+                </div>
             );
         });
     }
@@ -123,6 +120,7 @@ class UpdateProfile extends Component {
             file: loadedFile
         }
         this.props.updateProfileInfo(this.props.token, userData);
+        this.setState({ submitted: true });
     }
 
     validateControl(value, validation) {
@@ -199,17 +197,32 @@ class UpdateProfile extends Component {
             value={this.state.birthValue}
             onChange={this.birthChangeHandler}
         />
-        
+        let redirect = null;
+        if (this.state.submitted) {
+            redirect = <Redirect to='/profile' />;
+        }
+
         return (
-            <Form>
-                <Form.Group widths='equal'>
-                    {this.renderInputs()}
-                    {this.renderFileInput()}
-                </Form.Group>
-                {age}
-                {gender}
-                <Button disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
-            </Form>
+            <Grid>
+                {redirect}
+                <Grid.Row centered>
+                    <Grid.Column width={10}>
+                        <Form>
+                            {this.renderInputs()}
+                            {this.renderFileInput()}
+                            {age}
+                            {gender}
+                            <Grid>
+                                <Grid.Row centered>
+                                    <Grid.Column stretched>
+                                        <Button style={{ marginTop: '1em' }} disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Form>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 }

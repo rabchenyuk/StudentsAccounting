@@ -2,7 +2,6 @@
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
-using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Services
 {
@@ -10,11 +9,11 @@ namespace StudentsAccounting.BusinessLogic.Services
     {
         private readonly IEmailSender _emailSender;
         private readonly IRepository<User> _userRepo;
-        private readonly IRepository<Course> _courseRepo;
+        private readonly IRepository<UsersCourses> _courseRepo;
 
         public BackgroundEmailSender(IEmailSender emailSender,
                                      IRepository<User> userRepo,
-                                     IRepository<Course> courseRepo)
+                                     IRepository<UsersCourses> courseRepo)
         {
             _emailSender = emailSender;
             _userRepo = userRepo;

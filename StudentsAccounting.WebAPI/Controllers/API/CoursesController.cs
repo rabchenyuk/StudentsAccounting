@@ -59,12 +59,13 @@ namespace StudentsAccounting.WebAPI.Controllers.API
 
         [Authorize(Roles = "student")]
         [HttpPost("registerToCourse")]
-        public async Task<IActionResult> RegisterToCourse([FromBody]CourseId course)
+        public async Task<IActionResult> RegisterToCourse([FromBody]CoureRegistrationViewModel courseRegistration)
         {
             string userConfirmed = User.FindFirst(ClaimTypes.IsPersistent).Value;
             if (userConfirmed == "False")
                 return BadRequest("Confirm your email to be allowed for subscribtion");
-            var res = await _courseService.RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), course.Id);
+            var res = await _courseService.
+            RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), courseRegistration.CourseId, courseRegistration.StartDate);
             if (res.Successful)
                 return Ok(res.Information);
             return BadRequest(res.Information);
@@ -75,8 +76,6 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         public IActionResult GetStudentsCourses()
         {
             var courses = _courseService.GetStudentsCourses(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
-            if (courses == null)
-                return BadRequest("You haven't subscribed to any course yet");
             return Ok(_mapper.Map<IEnumerable<CourseViewModel>>(courses));
         }
     }

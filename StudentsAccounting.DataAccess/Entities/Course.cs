@@ -12,7 +12,7 @@ namespace StudentsAccounting.DataAccess.Entities
 
         public int Id { get; set; }
         public string CourseName { get; set; }
-        public DateTime StartDate { get; set; }
+        public string Description { get; set; }
         public virtual List<UsersCourses> Attenders { get; set; }
     }
 }

@@ -15,50 +15,44 @@ namespace StudentsAccounting.DataAccess.Configuration.InitialData
                 {
                     Id = ++id,
                     CourseName = "Applied math",
-                    StartDate = new System.DateTime(2019, 7, 15)
+                    Description = "Applied mathematics is the application of mathematical methods by different fields such as science, engineering, business, computer science, and industry. Thus, applied mathematics is a combination of mathematical science and specialized knowledge."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Programming",
-                    StartDate = new System.DateTime(2019, 7, 15)
+                    Description = "Computer programmers write code to create software programs. They turn the program designs created by software developers and engineers into instructions that a computer can follow."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Data science",
-                    StartDate = new System.DateTime(2019, 8, 15)
+                    Description = "Data science is a multi-disciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from structured and unstructured data."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Chemistry",
-                    StartDate = new System.DateTime(2019, 9, 15)
+                    Description = "Organic chemistry is the study of the structure, properties, composition, mechanisms, and reactions of organic compounds."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Driving",
-                    StartDate = new System.DateTime(2019, 10, 15)
+                    Description = "Driver responsibilities include arranging regular cleaning and maintenance services for the vehicle, planning each route based on road and traffic conditions and managing payments."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Cooking",
-                    StartDate = new System.DateTime(2019, 11, 15)
+                    Description = "Cooking or cookery is the art, technology, science and craft of preparing food for consumption."
                 },
                 new Course
                 {
                     Id = ++id,
                     CourseName = "Machine learning",
-                    StartDate = new System.DateTime(2019, 12, 15)
-                },
-                new Course
-                {
-                    Id = ++id,
-                    CourseName = "Test",
-                    StartDate = new System.DateTime(2019, 7, 21, 19, 45, 10)
-                },
+                    Description = "Machine learning (ML) is the scientific study of algorithms and statistical models that computer systems use in order to perform a specific task effectively without using explicit instructions, relying on patterns and inference instead."
+                }
             };
             builder.HasData(course);
         }

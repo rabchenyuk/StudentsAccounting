@@ -4,7 +4,6 @@ import { Tab } from 'semantic-ui-react';
 import { fetchStudents } from '../../store/actions/Admin/adminStudentsActions';
 import Students from '../../components/Admin/Students/Students';
 import Courses from '../../components/Admin/Courses/Courses';
-import Pagination from '../../components/Pagination/Pagination';
 import { fetchCourses } from '../../store/actions/Admin/adminCoursesActions';
 
 let sortBy = '';

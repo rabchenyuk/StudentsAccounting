@@ -6,6 +6,7 @@ import ProfileInfo from '../../components/Profile/ProfileInfo';
 import MyCourses from '../../components/Profile/MyCourses';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
 import UpdateProfile from '../../components/Profile/UpdateProfile';
+import { Container } from 'semantic-ui-react';
 
 
 class Profile extends Component {
@@ -34,23 +35,31 @@ class Profile extends Component {
                     <Route
                         exact
                         path={this.props.match.path}
-                        render={() => (<ProfileInfo
-                            photoUrl={this.props.photoUrl}
-                            registered={this.props.registered}
-                            firstName={this.props.firstName}
-                            lastName={this.props.lastName}
-                            age={this.props.age}
-                            gender={this.props.gender}
-                        />)} />
+                        render={() =>
+                            <Container>
+                                <ProfileInfo
+                                    loading={this.props.profileLoading}
+                                    photoUrl={this.props.photoUrl}
+                                    registered={this.props.registered}
+                                    firstName={this.props.firstName}
+                                    lastName={this.props.lastName}
+                                    age={this.props.age}
+                                    gender={this.props.gender}
+                                />
+                            </Container>} />
                     <Route
                         path={this.props.match.path + '/my-courses'}
                         render={() => <MyCourses
+                            loading={this.props.userCoursesLoading}
                             getUserCourses={() => this.getUserCourses(this.props.token)}
                             userCourses={this.props.userCourses}
                         />} />
                     <Route
                         path={this.props.match.path + '/update-profile'}
-                        render={() => <UpdateProfile {...this.props} />} />
+                        render={() =>
+                            <Container>
+                                <UpdateProfile {...this.props} />
+                            </Container>} />
                 </Switch>
             </div>
         );
@@ -66,7 +75,9 @@ const mapStateToProps = state => {
         gender: state.profile.gender,
         token: state.auth.token,
         registered: state.profile.registered,
-        userCourses: state.profile.userCourses
+        userCourses: state.profile.userCourses,
+        userCoursesLoading: state.profile.userCoursesLoading,
+        profileLoading: state.profile.profileLoading
     }
 }
 

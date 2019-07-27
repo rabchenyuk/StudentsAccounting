@@ -9,7 +9,8 @@
 } from '../actions/Profile/profileTypes';
 
 const initialState = {
-    loading: false,
+    profileLoading: false,
+    userCoursesLoading: false,
     profileError: null,
     updateProfileError: null,
     userCoursesError: null,
@@ -27,7 +28,7 @@ export const reducer = (state = initialState, action) => {
         case PROFILE_SUCCESS:
             return {
                 ...state,
-                loading: action.loading,
+                profileLoading: action.loading,
                 firstName: action.firstName,
                 lastName: action.lastName,
                 photoUrl: action.photoUrl,
@@ -38,29 +39,29 @@ export const reducer = (state = initialState, action) => {
         case PROFILE_START:
             return {
                 ...state,
-                loading: action.loading
+                profileLoading: action.loading
             }
         case PROFILE_ERROR:
             return {
                 ...state,
-                loading: action.loading,
+                profileLoading: action.loading,
                 error: action.error
             }
         case START_FETCHING_USER_COURSES:
             return {
                 ...state,
-                loading: action.loading
+                userCoursesLoading: action.loading
             }
         case FETCHING_USER_COURSES_SUCCESS:
             return {
                 ...state,
-                loading: action.loading,
+                userCoursesLoading: action.loading,
                 userCourses: action.userCourses
             }
         case USER_COURSES_ERROR:
             return {
                 ...state,
-                loading: action.loading,
+                userCoursesLoading: action.loading,
                 userCoursesError: action.userCoursesError
             }
         case START_UPDATING:

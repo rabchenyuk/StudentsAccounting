@@ -27,6 +27,7 @@ export const fetchUserCourses = token => {
                     startDate: res.data[index].startDate
                 })
             });
+            console.log(userCourses);
             dispatch(fetchUserCoursesSuccess(userCourses));
         } catch (e) {
             dispatch(fetchUserCoursesError(e));
@@ -43,7 +44,6 @@ export const updateProfileInfo = (token, userData) => {
     dataFormBody.set('age', ageValue);
     dataFormBody.set('gender', userData.gender);
     dataFormBody.set('file', userData.file);
-    console.log(dataFormBody);
     return async dispatch => {
         dispatch(startUpdating());
         try {

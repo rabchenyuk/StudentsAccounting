@@ -15,7 +15,7 @@ export const fetchCourses = (currentPage) => {
                 courses.push({
                     id: response.data[index].id,
                     name: response.data[index].courseName,
-                    startDate: response.data[index].startDate
+                    description: response.data[index].description
                 })
             });
             dispatch(fetchCoursesSuccess(courses, pageInfo));
@@ -63,6 +63,7 @@ export const subscribeToCourse = Id => {
             await axios.post('courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
             dispatch(subscribtionSuccessfull());
         } catch (e) {
+            console.log(e.response.data);
             dispatch(subscribeError(e));
         }
     }
