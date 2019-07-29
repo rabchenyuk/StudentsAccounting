@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Card, Image, Grid } from 'semantic-ui-react';
+import Loader from '../UI/Loader/Loader';
 
 const profileInfo = props => {
     let file = '/UserProfilePhoto/' + props.photoUrl;
@@ -24,7 +25,7 @@ const profileInfo = props => {
     );
 
     if (props.loading) {
-        profile = <h1>Profile loading...</h1>
+        profile = <Loader />
     }
     return (
         <Grid.Column>

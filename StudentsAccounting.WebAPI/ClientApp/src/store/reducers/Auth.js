@@ -21,7 +21,8 @@ export const reducer = (state = initialState, action) => {
                 role: action.role,
                 emailConfirmed: action.emailConfirmed,
                 userName: action.userName,
-                error: null
+                error: null,
+                loading: action.loading
             }
         case AUTH_LOGOUT:
             return {
@@ -31,7 +32,8 @@ export const reducer = (state = initialState, action) => {
                 emailConfirmed: null,
                 userName: null,
                 userId: null,
-                error: null
+                error: null,
+                loading: action.loading
             }
         case AUTH_FAIL:
             return { ...state, error: action.error, loading: action.loading }

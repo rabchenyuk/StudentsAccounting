@@ -27,7 +27,6 @@ export const fetchUserCourses = token => {
                     startDate: res.data[index].startDate
                 })
             });
-            console.log(userCourses);
             dispatch(fetchUserCoursesSuccess(userCourses));
         } catch (e) {
             dispatch(fetchUserCoursesError(e));

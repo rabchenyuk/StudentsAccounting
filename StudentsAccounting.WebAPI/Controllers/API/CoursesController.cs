@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using StudentsAccounting.BusinessLogic.Helpers;
+using System;
 
 namespace StudentsAccounting.WebAPI.Controllers.API
 {
@@ -64,8 +65,9 @@ namespace StudentsAccounting.WebAPI.Controllers.API
             string userConfirmed = User.FindFirst(ClaimTypes.IsPersistent).Value;
             if (userConfirmed == "False")
                 return BadRequest("Confirm your email to be allowed for subscribtion");
+            var startDate = DateTime.Parse(courseRegistration.StartDate);
             var res = await _courseService.
-            RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), courseRegistration.CourseId, courseRegistration.StartDate);
+            RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), courseRegistration.CourseId, startDate);
             if (res.Successful)
                 return Ok(res.Information);
             return BadRequest(res.Information);

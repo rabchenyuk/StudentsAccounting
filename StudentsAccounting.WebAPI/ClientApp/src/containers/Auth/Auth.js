@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { auth, register } from '../../store/actions/Auth/authActions';
 import { Button, Form, Message, Container, Grid } from 'semantic-ui-react';
+import Loader from '../../components/UI/Loader/Loader';
 
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -103,23 +104,25 @@ class Auth extends Component {
                 <Grid>
                     <Grid.Row centered>
                         <Grid.Column width={5}>
-                            <Form error={this.props.error != null}>
-                                {this.renderInputs()}
-                                <Message
-                                    error
-                                    header='Someting went wrong'
-                                    content={this.props.error}
-                                />
-                                <Grid>
-                                    <Grid.Row centered>
-                                        <Grid.Column stretched>
-                                            <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
-                                            <div>Don't have account? Register</div>
-                                            <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Form>
+                            {this.props.loading ? <Loader /> :
+                                <Form error={this.props.error != null}>
+                                    {this.renderInputs()}
+                                    <Message
+                                        error
+                                        header='Someting went wrong'
+                                        content={this.props.error}
+                                    />
+                                    <Grid>
+                                        <Grid.Row centered>
+                                            <Grid.Column stretched>
+                                                <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
+                                                <div>Don't have account? Register</div>
+                                                <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </Form>
+                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -130,7 +133,8 @@ class Auth extends Component {
 
 const mapStateToProps = state => {
     return {
-        error: state.auth.error
+        error: state.auth.error,
+        loading: state.auth.loading
     }
 }
 

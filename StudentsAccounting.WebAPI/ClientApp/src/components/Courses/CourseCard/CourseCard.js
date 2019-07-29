@@ -1,6 +1,6 @@
 ﻿import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { Card, Button, Grid } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom';
+import { Card, Grid } from 'semantic-ui-react';
 
 const courseCard = props => {
     return (
@@ -14,17 +14,16 @@ const courseCard = props => {
                         {props.desc}
                     </div>
                     {
-                        props.isAuth && props.userRole !== 'admin' && !props.match.path + '/update-profile' ?
-                            <Button
-                                disabled={!props.confirmed}
-                                content={props.confirmed ? 'Subscribe' : 'Confirm email'}
-                                primary
-                                onClick={() => props.subscribe(props.courseId)} /> : null
+                        props.match.path !== '/profile/my-courses' ? null :
+                            <div>
+                                {props.date}
+                            </div>
                     }
+                    <NavLink to={'/course/' + props.courseId}>Watch</NavLink>
                 </Card.Content>
             </Card>
         </Grid.Column>
     );
-};
+}
 
 export default withRouter(courseCard);

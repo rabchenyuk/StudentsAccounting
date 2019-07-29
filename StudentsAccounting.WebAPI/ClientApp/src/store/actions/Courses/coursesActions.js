@@ -1,5 +1,16 @@
 ﻿import axios from '../../../axios';
-import { COURSES_START, COURSES_SUCCESS, COURSES_ERROR, START_SUBSCRIBING, SUBSCRIBE_ERROR, SUBSCRIPTION_SUCCESSFULL } from './coursesTypes';
+import { toast } from "react-toastify";
+import {
+    COURSES_START,
+    COURSES_SUCCESS,
+    COURSES_ERROR,
+    START_SUBSCRIBING,
+    SUBSCRIBE_ERROR,
+    SUBSCRIPTION_SUCCESSFULL,
+    START_FETCHING_SINGLE_COURSE,
+    FETCH_SINGLE_COURSE_SUCCESS,
+    FETCH_SINGLE_COURSE_ERROR
+} from './coursesTypes';
 
 export const fetchCourses = (currentPage) => {
     return async dispatch => {
@@ -22,6 +33,47 @@ export const fetchCourses = (currentPage) => {
         } catch (e) {
             dispatch(fetchCoursesError(e));
         }
+    }
+}
+
+export const fetchCourseById = id => {
+    return async dispatch => {
+        dispatch(startFetchingCourse());
+        try {
+            const res = await axios.get(`courses/GetCourse/${id}`);
+            const course = {
+                id: res.data.id,
+                courseName: res.data.courseName,
+                description: res.data.description
+            };
+            dispatch(fetchCourseSuccess(course));
+        } catch (e) {
+            dispatch(fetchCourseError(e));
+        }
+    }
+}
+
+export const startFetchingCourse = () => {
+    return {
+        type: START_FETCHING_SINGLE_COURSE,
+        loading: true,
+        course: null
+    }
+}
+
+export const fetchCourseSuccess = (course) => {
+    return {
+        type: FETCH_SINGLE_COURSE_SUCCESS,
+        course: course,
+        loading: false
+    }
+}
+
+export const fetchCourseError = e => {
+    return {
+        type: FETCH_SINGLE_COURSE_ERROR,
+        loading: false,
+        error: e
     }
 }
 
@@ -54,25 +106,35 @@ export const fetchCoursesError = e => {
     }
 }
 
-export const subscribeToCourse = Id => {
+export const subscribeToCourse = (courseId, dt) => {
+    const day = dt.getDate();
+    const month = dt.getMonth() + 1;
+    const year = dt.getFullYear();
+    const hour = dt.getHours();
+    const minute = dt.getMinutes();
+    const second = dt.getSeconds();
+    
+    const startDate = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
     const token = localStorage.getItem('token');
-    const courseData = { Id };
+    const courseData = { courseId, startDate };
     return async dispatch => {
         dispatch(startSubscribing());
         try {
-            await axios.post('courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
-            dispatch(subscribtionSuccessfull());
+            const res = await axios.post('courses/registerToCourse', courseData, { 'headers': { 'Authorization': 'Bearer ' + token } });
+            dispatch(subscribtionSuccessfull(res.data));
+            toast.success(res.data, { containerId: 'subscription' });
         } catch (e) {
-            console.log(e.response.data);
-            dispatch(subscribeError(e));
+            dispatch(subscribeError(e.response.data));
+            toast.error(e.response.data, { containerId: 'subscription' });
         }
     }
 }
 
-export const subscribtionSuccessfull = () => {
+export const subscribtionSuccessfull = successMsg => {
     return {
         type: SUBSCRIPTION_SUCCESSFULL,
-        loading: false
+        loading: false,
+        success: successMsg
     }
 }
 

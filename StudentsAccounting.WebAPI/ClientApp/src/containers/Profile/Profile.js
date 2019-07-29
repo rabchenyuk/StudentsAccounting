@@ -50,9 +50,7 @@ class Profile extends Component {
                     <Route
                         path={this.props.match.path + '/my-courses'}
                         render={() => <MyCourses
-                            loading={this.props.userCoursesLoading}
-                            getUserCourses={() => this.getUserCourses(this.props.token)}
-                            userCourses={this.props.userCourses}
+                            token={this.props.token}
                         />} />
                     <Route
                         path={this.props.match.path + '/update-profile'}

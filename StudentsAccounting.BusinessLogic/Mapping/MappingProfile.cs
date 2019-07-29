@@ -33,7 +33,10 @@ namespace StudentsAccounting.BusinessLogic.Mapping
                     CourseName = course.Course.CourseName
                 })));
             CreateMap<UsersCourses, CourseDTO>()
-                .ForMember(c => c.CourseName, opt => opt.MapFrom(uc => uc.Course.CourseName));
+                .ForMember(c => c.Id, opt => opt.MapFrom(uc => uc.CourseId))
+                .ForMember(c => c.CourseName, opt => opt.MapFrom(uc => uc.Course.CourseName))
+                .ForMember(c => c.StartDate, opt => opt.MapFrom(uc => uc.StartDate))
+                .ForMember(c => c.Description, opt => opt.MapFrom(uc => uc.Course.Description));
         }
     }
 }

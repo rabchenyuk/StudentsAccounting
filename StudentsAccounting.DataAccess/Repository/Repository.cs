@@ -2,7 +2,6 @@
 using StudentsAccounting.DataAccess.Context;
 using StudentsAccounting.DataAccess.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -50,7 +49,12 @@ namespace StudentsAccounting.DataAccess.Repository
 
         public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _set.FirstOrDefaultAsync(predicate);
+            return await _set.FirstOrDefaultAsync(predicate).ConfigureAwait(false);
+        }
+
+        public T GetSingle(Expression<Func<T, bool>> predicate)
+        {
+            return _set.FirstOrDefault(predicate);
         }
     }
 }

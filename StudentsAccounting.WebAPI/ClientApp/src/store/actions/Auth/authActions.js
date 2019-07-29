@@ -1,5 +1,14 @@
 import axios from '../../../axios';
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START, REGISTER_START, REGISTER_FAIL, REGISTER_SUCCESS } from '../Auth/authTypes';
+import { toast } from "react-toastify";
+import {
+    AUTH_SUCCESS,
+    AUTH_LOGOUT,
+    AUTH_FAIL,
+    AUTH_START,
+    REGISTER_START,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS
+} from '../Auth/authTypes';
 import jwt from 'jsonwebtoken';
 
 export const auth = (login, password) => {
@@ -33,6 +42,7 @@ export const register = (login, password) => {
         try {
             await axios.post('auth/register', registerData);
             dispatch(registerSuccess());
+            toast.success("Letter with confirmation was sent to your email", { containerId: 'auth' });
             dispatch(auth(login, password));
         } catch (e) {
             dispatch(registerFail(e.response.data[0].description));
@@ -50,7 +60,8 @@ export const registerSuccess = () => {
 export const registerStart = () => {
     return {
         type: REGISTER_START,
-        loading: true
+        loading: true,
+        error: null
     }
 }
 
@@ -100,7 +111,8 @@ export const autoLogout = time => {
 export const logout = () => {
     localStorage.removeItem('token');
     return {
-        type: AUTH_LOGOUT
+        type: AUTH_LOGOUT,
+        loading: false
     }
 }
 

@@ -100,7 +100,7 @@ namespace StudentsAccounting.BusinessLogic.Services
                     _usersCoursesRepo.Add(userCourse);
                     res.Successful = true;
                     res.Information = "You have successfully registered to course";
-                    _backgroundEmailSender.SendNotificationEmails(userId, courseId);
+                    _backgroundEmailSender.SendNotificationEmails(userCourse.UserId, userCourse.CourseId, userCourse.StartDate);
                     return res;
                 }
                 catch (Exception e)

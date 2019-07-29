@@ -1,7 +1,9 @@
-﻿namespace StudentsAccounting.BusinessLogic.Interfaces
+﻿using System;
+
+namespace StudentsAccounting.BusinessLogic.Interfaces
 {
     public interface IBackgroundEmailSender
     {
-        void SendNotificationEmails(int userId, int courseId);
+        void SendNotificationEmails(int userId, int courseId, DateTime startDate);
     }
 }

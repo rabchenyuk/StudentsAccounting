@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -47,7 +47,7 @@
     <Compile Remove="Migrations\20190721161633_init.cs" />
     <Compile Remove="Migrations\20190721162002_init.cs" />
     <Compile Remove="Migrations\20190723080006_init.cs" />
-    <Compile Remove="Migrations\20190725132523_init.cs" />
+    <Compile Remove="Migrations\20190729082321_init.cs" />
   </ItemGroup>
 
   <ItemGroup>

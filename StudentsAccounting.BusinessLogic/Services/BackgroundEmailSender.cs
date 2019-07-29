@@ -2,6 +2,7 @@
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
+using System;
 
 namespace StudentsAccounting.BusinessLogic.Services
 {
@@ -20,20 +21,18 @@ namespace StudentsAccounting.BusinessLogic.Services
             _courseRepo = courseRepo;
         }
 
-        public async void SendNotificationEmails(int userId, int courseId)
+        public void SendNotificationEmails(int userId, int courseId, DateTime startDate)
         {
-            var user = await _userRepo.GetSingleAsync(u => u.Id == userId);
-            var currentCourse = await _courseRepo.GetByIdAsync(courseId);
-            var monthNotify = currentCourse.StartDate.Subtract(currentCourse.StartDate.AddMinutes(10).Subtract(currentCourse.StartDate));
-            var weekNotify = currentCourse.StartDate.Subtract((currentCourse.StartDate.AddMinutes(5).Subtract(currentCourse.StartDate)));
-            var dayNotify = currentCourse.StartDate.Subtract((currentCourse.StartDate.AddMinutes(2).Subtract(currentCourse.StartDate)));
+            var monthNotify = startDate.Subtract(startDate.AddMinutes(10).Subtract(startDate));
+            var weekNotify = startDate.Subtract((startDate.AddMinutes(5).Subtract(startDate)));
+            var dayNotify = startDate.Subtract((startDate.AddMinutes(2).Subtract(startDate)));
 
             BackgroundJob.Schedule(() =>
-                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Montly Course start", $"Your course will start at { currentCourse.StartDate - monthNotify}"), monthNotify);
+                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Montly Course start", $"Your course will start at {startDate - monthNotify}"), monthNotify);
             BackgroundJob.Schedule(() =>
-                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Weekly Course notification", $"Your course will start at {currentCourse.StartDate - weekNotify}"), weekNotify);
+                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Weekly Course notification", $"Your course will start at {startDate - weekNotify}"), weekNotify);
             BackgroundJob.Schedule(() =>
-                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Day Course notification", $"Your course will start at {currentCourse.StartDate - dayNotify}"), dayNotify);
+                _emailSender.SendEmailAsync("d.rabchenyuk@gmail.com", "Day Course notification", $"Your course will start at {startDate - dayNotify}"), dayNotify);
         }
     }
 }
