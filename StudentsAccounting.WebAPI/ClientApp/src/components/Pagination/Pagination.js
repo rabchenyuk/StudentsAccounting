@@ -8,9 +8,10 @@ const pagination = props => (
             {
                 props.totalPages.map((val, index) => {
                     return <span
+                        onClick={() => props.loadData(val)}
                         className="item"
                         key={index}
-                        style={val === props.currentPage ? { color: 'red' } : {}}> {val}
+                        style={val === props.currentPage ? { backgroundColor: '#313438', color: '#fff', cursor: 'pointer' } : { cursor: 'pointer'}}> {val}
                     </span>
                 })
             }

@@ -4,13 +4,14 @@ import { auth, register } from '../../store/actions/Auth/authActions';
 import { Button, Form, Message, Container, Grid } from 'semantic-ui-react';
 import Loader from '../../components/UI/Loader/Loader';
 
-function validateEmail(email) {
+const validateEmail = email => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
 class Auth extends Component {
-    state = { 
+    state = {
+        formTouched: false,
         formControls: {
             email: {
                 value: '',
@@ -40,6 +41,7 @@ class Auth extends Component {
     }
 
     loginHandler = (e) => {
+        this.setState({ formTouched: false });
         e.preventDefault();
         this.props.auth(
             this.state.formControls.email.value,
@@ -48,6 +50,7 @@ class Auth extends Component {
     }
 
     registerHandler = (e) => {
+        this.setState({ formTouched: false });
         e.preventDefault();
         this.props.register(
             this.state.formControls.email.value,
@@ -96,37 +99,36 @@ class Auth extends Component {
         control.valid = this.validateControl(control.value, control.validation);
         formControls[controlName] = control;
         this.setState({ formControls });
+        this.setState({ formTouched: true });
     }
 
     render() {
         return (
-            <Container>
-                <Grid>
-                    <Grid.Row centered>
-                        <Grid.Column width={5}>
-                            {this.props.loading ? <Loader /> :
-                                <Form error={this.props.error != null}>
-                                    {this.renderInputs()}
-                                    <Message
-                                        error
-                                        header='Someting went wrong'
-                                        content={this.props.error}
-                                    />
-                                    <Grid>
-                                        <Grid.Row centered>
-                                            <Grid.Column stretched>
-                                                <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
-                                                <div>Don't have account? Register</div>
-                                                <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </Form>
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Container>
+            <Grid>
+                <Grid.Row centered>
+                    <Grid.Column width={5}>
+                        {this.props.loading ? <Loader /> :
+                            <Form error={this.props.error != null && !this.state.formTouched}>
+                                {this.renderInputs()}
+                                <Message
+                                    error
+                                    header='Someting went wrong'
+                                    content={this.props.error}
+                                />
+                                <Grid>
+                                    <Grid.Row centered>
+                                        <Grid.Column stretched>
+                                            <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
+                                            <div>Don't have account? Register</div>
+                                            <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Form>
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 };

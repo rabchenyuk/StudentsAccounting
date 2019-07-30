@@ -2,43 +2,47 @@
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import { fetchStudents } from '../../store/actions/Admin/adminStudentsActions';
-import Students from '../../components/Admin/Students/Students';
-import Courses from '../../components/Admin/Courses/Courses';
+import TableContent from '../../components/Admin/TableContent/TableContent';
 import { fetchCourses } from '../../store/actions/Admin/adminCoursesActions';
 
 let sortBy = '';
-let isSortAscending = null;
+let isSortAscendingStudents = false;
+let isSortAscendingCourses = false;
 let search = '';
-let currentPage = null;
+let currentPage;
 
 class Admin extends Component {
     componentDidMount() {
-        this.props.fetchStudents(sortBy, isSortAscending = true, search);
-        this.props.fetchCourses(sortBy, isSortAscending = true, search);
+        this.props.fetchStudents(sortBy, isSortAscendingStudents = true, search);
+        this.props.fetchCourses(sortBy, isSortAscendingCourses = true, search);
     }
 
     loadStudents = (value) => {
-        this.props.fetchStudents(sortBy, isSortAscending = true, search, currentPage = value);
+        this.props.fetchStudents(sortBy, isSortAscendingStudents, search, currentPage = value);
     }
 
     loadCourses = (value) => {
-        this.props.fetchCourses(sortBy, isSortAscending = true, search, currentPage = value);
+        this.props.fetchCourses(sortBy, isSortAscendingCourses, search, currentPage = value);
     }
 
     sortStudentsBy = (val) => {
-        this.props.fetchStudents(sortBy = val, isSortAscending, search, this.props.studentsCurrentPage);
+        isSortAscendingStudents = !isSortAscendingStudents;
+        this.props.fetchStudents(sortBy = val, isSortAscendingStudents, search, this.props.studentsCurrentPage);
     }
 
     sortCoursesBy = (val) => {
-        this.props.fetchCourses(sortBy = val, isSortAscending, search, this.props.coursesCurrentPage);
+        isSortAscendingCourses = !isSortAscendingCourses;
+        this.props.fetchCourses(sortBy = val, isSortAscendingCourses, search, this.props.coursesCurrentPage);
     }
 
     coursesInputHandler = (val) => {
-        this.props.fetchCourses(sortBy, isSortAscending, search = val, this.props.coursesCurrentPage);
+        this.props.fetchCourses(sortBy, isSortAscendingCourses, search = val, this.props.coursesCurrentPage);
+        search = '';
     }
 
     studentsInputHandler = (val) => {
-        this.props.fetchStudents(sortBy, isSortAscending, search = val, this.props.studentsCurrentPage);
+        this.props.fetchStudents(sortBy, isSortAscendingStudents, search = val, this.props.studentsCurrentPage);
+        search = '';
     }
 
     resetStudentsSearch = () => {
@@ -55,26 +59,28 @@ class Admin extends Component {
         
     render() {
         let students = (
-            <Students
+            <TableContent
                 clickHandler={this.sortStudentsBy}
                 currentPage={this.props.studentsCurrentPage}
                 totalPages={this.props.studentsTotalPages}
-                loadStudents={this.loadStudents}
-                students={this.props.students}
+                loadData={this.loadStudents}
+                value={this.props.students}
                 inputHandler={this.studentsInputHandler}
                 resetSearch={this.resetStudentsSearch}
+                loading={this.props.studentsLoading}
             />
         );
 
         let courses = (
-            <Courses
+            <TableContent
                 clickHandler={this.sortCoursesBy}
                 currentPage={this.props.coursesCurrentPage}
                 totalPages={this.props.coursesTotalPages}
-                loadCourses={this.loadCourses}
-                courses={this.props.courses}
+                loadData={this.loadCourses}
+                value={this.props.courses}
                 inputHandler={this.coursesInputHandler}
                 resetSearch={this.resetCoursesSearch}
+                loading={this.props.coursesLoading}
             />
         );
 
@@ -108,14 +114,16 @@ const mapStateToProps = state => {
         studentsTotalPages: state.adminStudents.totalPages,
         courses: state.adminCourses.courses,
         coursesCurrentPage: state.adminCourses.currentPage,
-        coursesTotalPages: state.adminCourses.totalPages
+        coursesTotalPages: state.adminCourses.totalPages,
+        coursesLoading: state.adminCourses.loading,
+        studentsLoading: state.adminStudents.loading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchStudents: (orderBy, isSortAscending, search, currentPage) => dispatch(fetchStudents(orderBy, isSortAscending, search, currentPage)),
-        fetchCourses: (orderBy, isSortAscending, search, currentPage) => dispatch(fetchCourses(orderBy, isSortAscending, search, currentPage))
+        fetchStudents: (orderBy, isSortAscendingStudents, search, currentPage) => dispatch(fetchStudents(orderBy, isSortAscendingStudents, search, currentPage)),
+        fetchCourses: (orderBy, isSortAscendingCourses, search, currentPage) => dispatch(fetchCourses(orderBy, isSortAscendingCourses, search, currentPage))
     }
 }
 

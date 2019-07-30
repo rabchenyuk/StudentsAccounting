@@ -7,7 +7,6 @@ using StudentsAccounting.DataAccess.Entities;
 using StudentsAccounting.DataAccess.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace StudentsAccounting.BusinessLogic.Services
@@ -53,11 +52,22 @@ namespace StudentsAccounting.BusinessLogic.Services
         {
             var courses = _repo.GetAllQueryable();
             if (!string.IsNullOrEmpty(queryParams.Search))
-                courses = courses.Where(s => s.CourseName.ToLower().Equals(queryParams.Search.ToLower()));
+                courses = courses.Where(s => s.CourseName.ToLower().Equals(queryParams.Search.ToLower())
+                || s.CourseName.StartsWith(queryParams.Search));
             if (queryParams.SortBy == "id")
-                courses = courses.OrderBy(c => c.Id);
+            {
+                if (queryParams.IsSortAscending)
+                    courses = courses.OrderBy(c => c.Id);
+                else
+                    courses = courses.OrderByDescending(c => c.Id);
+            }
             if (queryParams.SortBy == "courseName")
-                courses = courses.OrderBy(c => c.CourseName);
+            {
+                if (queryParams.IsSortAscending)
+                    courses = courses.OrderBy(c => c.CourseName);
+                else
+                    courses = courses.OrderByDescending(c => c.CourseName);
+            }
             var pagedCourses = await PagedList<Course>.CreateAsync(courses, queryParams.CurrentPage, queryParams.PageSize);
             var listModel = _mapper.Map<IEnumerable<CourseForAdminDTO>>(pagedCourses);
             var outputModel = new PageInfo<CourseForAdminDTO>
@@ -91,7 +101,7 @@ namespace StudentsAccounting.BusinessLogic.Services
         public async Task<Response> RegisterToCourse(int userId, int courseId, DateTime startDate)
         {
             var res = new Response();
-            var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId);
+            var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId && u.StartDate == startDate);
             if (userInCourse == null)
             {
                 var userCourse = new UsersCourses { UserId = userId, CourseId = courseId, StartDate = startDate };
@@ -113,7 +123,7 @@ namespace StudentsAccounting.BusinessLogic.Services
             else
             {
                 res.Successful = false;
-                res.Information = "You have already registered on this course";
+                res.Information = "Choose another date";
                 return res;
             }
         }

@@ -23,6 +23,7 @@ class Courses extends Component {
                                 this.props.coursesList.map((val, index) => {
                                     return (
                                         <CourseCard
+                                            imageUrl={val.imageUrl}
                                             key={index}
                                             header={val.name}
                                             desc={this.props.coursesList[index].description}

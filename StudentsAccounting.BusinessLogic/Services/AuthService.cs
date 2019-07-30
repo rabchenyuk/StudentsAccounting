@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
-using StudentsAccounting.BusinessLogic.DTO.UserDTO;
-using StudentsAccounting.BusinessLogic.Helpers;
 using StudentsAccounting.BusinessLogic.Interfaces;
 using StudentsAccounting.DataAccess.Entities;
 using System;

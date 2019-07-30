@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,10 @@
     <Compile Remove="Migrations\20190721162002_init.cs" />
     <Compile Remove="Migrations\20190723080006_init.cs" />
     <Compile Remove="Migrations\20190729082321_init.cs" />
+    <Compile Remove="Migrations\20190729090743_init.cs" />
+    <Compile Remove="Migrations\20190730093327_init.cs" />
+    <Compile Remove="Migrations\20190730100332_init.cs" />
+    <Compile Remove="Migrations\20190730103233_init.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +66,12 @@
 
   <ItemGroup>
     <None Include="..\..\..\..\ASP.NET%2528Core%2529\StudentsAccounting\StudentsAccounting\StudentsAccounting.WebAPI\ClientApp\src\components\Navigation\MenuToggle\MenuToggle.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

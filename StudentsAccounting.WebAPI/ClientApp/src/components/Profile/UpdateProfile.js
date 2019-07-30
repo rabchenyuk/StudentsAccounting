@@ -215,7 +215,7 @@ class UpdateProfile extends Component {
                             <Grid>
                                 <Grid.Row centered>
                                     <Grid.Column stretched>
-                                        <Button style={{ marginTop: '1em' }} disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
+                                        <Button secondary style={{ marginTop: '1em' }} disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

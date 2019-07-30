@@ -2,6 +2,7 @@
 import CourseCard from '../Courses/CourseCard/CourseCard';
 import { connect } from 'react-redux';
 import { fetchUserCourses } from '../../store/actions/Profile/profileActions';
+import Loader from '../UI/Loader/Loader';
 
 const convertDate = date => {
     const dateString = new Date(Date.parse(date)).toLocaleDateString();
@@ -15,21 +16,28 @@ class MyCourses extends Component {
     }
 
     renderCourses = () => {
-        return this.props.myCourses.map((val, index) => {
-            return (
-                <CourseCard
-                    courseId={val.id}
-                    key={val + index}
-                    header={val.name}
-                    date={convertDate(val.startDate)}
-                />)
-        });
+        let courses = null;
+        if (this.props.myCourses.length === 0) {
+            courses = <h1 style={{ textAlign: 'center' }}>You haven't subscribed to any course</h1>;
+        }
+        if (this.props.myCourses.length > 0) {
+            courses = this.props.myCourses.map((val, index) => {
+                return (
+                    <CourseCard
+                        courseId={val.id}
+                        key={val + index}
+                        header={val.name}
+                        date={convertDate(val.startDate)}
+                    />)
+            });
+        }
+        return courses;
     }
 
     render() {
         return (
             <React.Fragment>
-                {!this.props.loading && this.props.myCourses.length === 0 ? <h1>You haven't subscribed to any course</h1> : this.renderCourses()}
+                {this.props.loading ? <Loader /> : this.renderCourses()}
             </React.Fragment>
         );
     }
@@ -37,7 +45,8 @@ class MyCourses extends Component {
 
 const mapStateToProps = state => {
     return {
-        myCourses: state.profile.userCourses
+        myCourses: state.profile.userCourses,
+        loading: state.profile.userCoursesLoading
     }
 }
 

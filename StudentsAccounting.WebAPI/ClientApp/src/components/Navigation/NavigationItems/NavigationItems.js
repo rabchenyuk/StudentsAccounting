@@ -4,7 +4,7 @@ import { Container } from 'semantic-ui-react';
 
 const renderLinks = (links) => {
     return links.map((val, index) => {
-        return <NavigationItem key={index} link={val.to}>{val.label}</NavigationItem>
+        return <NavigationItem position={val.position} key={index} link={val.to}>{val.label}</NavigationItem>
     });
 }
 
@@ -12,18 +12,18 @@ const navigationItems = props => {
     const links = [];
     
     if (props.isAuth && props.userRole === 'admin') {
-        links.push({ to: '/admin', label: 'Admin' });
-        links.push({ to: '/logout', label: 'Logout' })
+        links.push({ to: '/admin', label: 'Admin', position: 'left' });
+        links.push({ to: '/logout', label: 'Logout', position: 'right' })
     }
     if (props.isAuth && props.userRole === 'student') {
-        links.push({ to: '/profile', label: 'Profile' });
-        links.push({ to: '/logout', label: 'Logout' });
+        links.push({ to: '/profile', label: 'Profile', position: 'left' });
+        links.push({ to: '/logout', label: 'Logout', position: 'right' });
     }
     if (props.isAuth && props.userRole === 'No role') {
-        links.push({ to: '/logout', label: 'Logout' });
+        links.push({ to: '/logout', label: 'Logout', position: 'right' });
     }
     if (!props.isAuth) {
-        links.push({ to: '/auth', label: 'Authorize' });
+        links.push({ to: '/auth', label: 'Authorize', position: 'right' });
     }
 
     return (

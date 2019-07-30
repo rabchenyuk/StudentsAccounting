@@ -39,7 +39,8 @@ namespace StudentsAccounting.BusinessLogic.Services
                 students = students.Where(s => s.FirstName.ToLower().Equals(queryParams.Search.ToLower())
                 || s.LastName.ToLower().Equals(queryParams.Search.ToLower())
                 || (s.FirstName + ' ' + s.LastName).ToLower().Equals(queryParams.Search.ToLower())
-                || (s.LastName + ' ' + s.FirstName).ToLower().Equals(queryParams.Search.ToLower()));
+                || (s.LastName + ' ' + s.FirstName).ToLower().Equals(queryParams.Search.ToLower())
+                || s.FirstName.ToLower().StartsWith(queryParams.Search.ToLower()));
             var columnsMap = new Dictionary<string, Expression<Func<User, object>>>
             {
                 ["id"] = s => s.Id,
@@ -47,7 +48,8 @@ namespace StudentsAccounting.BusinessLogic.Services
                 ["lastName"] = s => s.LastName,
                 ["age"] = s => s.Age,
                 ["email"] = s => s.Email,
-                ["registeredDate"] = s => s.RegistrationDate
+                ["registrationDate"] = s => s.RegistrationDate,
+                ["gender"] = s => s.Gender
             };
             students = students.ApplyOrdering(queryParams, columnsMap);
             var pagedStudents = await PagedList<User>.CreateAsync(students, queryParams.CurrentPage, queryParams.PageSize);

@@ -1,6 +1,13 @@
 ﻿import axios from '../../../axios';
 import { START_STUDENTS_FETCHING, FETCH_STUDENTS_FAIL, FETCH_STUDENTS_SUCCESS } from './adminTypes';
 
+
+const convertDate = date => {
+    const dateString = new Date(Date.parse(date)).toLocaleDateString();
+    const timeString = new Date(Date.parse(date)).toLocaleTimeString();
+    return dateString + ' ' + timeString;
+}
+
 export const fetchStudents = (sortBy='', isSortAscending = false, search='', currentPage) => {
     if (currentPage === undefined) {
         currentPage = 1;
@@ -12,7 +19,19 @@ export const fetchStudents = (sortBy='', isSortAscending = false, search='', cur
             const res = await axios.get(`students/GetStudentsForAdmin?sortBy=${sortBy}&isSortAscending=${isSortAscending}&search=${search}&currentPage=${currentPage}`,
                 { 'headers': { 'Authorization': 'Bearer ' + token } });
             const pageInfo = JSON.parse(res.headers.pagination);
-            dispatch(fetchSuccess(res.data, pageInfo));
+            const students = [];
+            Object.keys(res.data).forEach((key, index) => {
+                students.push({
+                    id: res.data[index].id,
+                    email: res.data[index].email,
+                    firstName: res.data[index].firstName,
+                    lastName: res.data[index].lastName,
+                    age: res.data[index].age,
+                    gender: res.data[index].gender,
+                    registrationDate: convertDate(res.data[index].registrationDate)
+                })
+            });
+            dispatch(fetchSuccess(students, pageInfo));
         } catch (e) {
             dispatch(fetchFail(e));
         }

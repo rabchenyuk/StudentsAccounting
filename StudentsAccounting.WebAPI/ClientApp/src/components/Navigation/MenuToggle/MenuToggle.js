@@ -1,13 +1,11 @@
 ﻿import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Icon, Menu, Sidebar } from 'semantic-ui-react';
+import { Icon, Menu, Sidebar } from 'semantic-ui-react';
 
 const menuToggle = props => {
     return (
         <React.Fragment>
-            <Button disabled={props.visible} onClick={props.handleShowClick}>
-                <Icon name='server' />
-            </Button>
+            <Icon size='large' style={{ cursor: 'pointer' }} onClick={props.handleShowClick} name='server' />
             <Sidebar
                 as={Menu}
                 animation='overlay'

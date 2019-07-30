@@ -26,7 +26,8 @@ export const fetchCourses = (currentPage) => {
                 courses.push({
                     id: response.data[index].id,
                     name: response.data[index].courseName,
-                    description: response.data[index].description
+                    description: response.data[index].description,
+                    imageUrl: response.data[index].imageUrl
                 })
             });
             dispatch(fetchCoursesSuccess(courses, pageInfo));
@@ -44,7 +45,8 @@ export const fetchCourseById = id => {
             const course = {
                 id: res.data.id,
                 courseName: res.data.courseName,
-                description: res.data.description
+                description: res.data.description,
+                imageUrl: res.data.imageUrl
             };
             dispatch(fetchCourseSuccess(course));
         } catch (e) {

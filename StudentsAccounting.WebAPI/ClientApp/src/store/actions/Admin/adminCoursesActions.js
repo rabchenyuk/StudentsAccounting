@@ -16,8 +16,7 @@ export const fetchCourses = (sortBy='', isSortAscending = false, search='', curr
             Object.keys(res.data).forEach((key, index) => {
                 courses.push({
                     id: res.data[index].id,
-                    courseName: res.data[index].courseName,
-                    startDate: res.data[index].startDate
+                    courseName: res.data[index].courseName
                 })
             });
             dispatch(fetchSuccess(courses, pageInfo));

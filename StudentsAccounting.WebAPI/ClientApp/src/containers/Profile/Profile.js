@@ -8,6 +8,11 @@ import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
 import UpdateProfile from '../../components/Profile/UpdateProfile';
 import { Container } from 'semantic-ui-react';
 
+const convertDate = date => {
+    const dateString = new Date(Date.parse(date)).toLocaleDateString();
+    const timeString = new Date(Date.parse(date)).toLocaleTimeString();
+    return dateString + ' ' + timeString;
+}
 
 class Profile extends Component {
     state = { visible: false }
@@ -40,7 +45,7 @@ class Profile extends Component {
                                 <ProfileInfo
                                     loading={this.props.profileLoading}
                                     photoUrl={this.props.photoUrl}
-                                    registered={this.props.registered}
+                                    registered={convertDate(this.props.registered)}
                                     firstName={this.props.firstName}
                                     lastName={this.props.lastName}
                                     age={this.props.age}
@@ -49,9 +54,10 @@ class Profile extends Component {
                             </Container>} />
                     <Route
                         path={this.props.match.path + '/my-courses'}
-                        render={() => <MyCourses
-                            token={this.props.token}
-                        />} />
+                        render={() =>
+                            <Container>
+                                <MyCourses token={this.props.token} />
+                            </Container>} />
                     <Route
                         path={this.props.match.path + '/update-profile'}
                         render={() =>

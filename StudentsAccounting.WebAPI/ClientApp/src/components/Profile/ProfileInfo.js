@@ -13,12 +13,12 @@ const profileInfo = props => {
             <Image src={file} wrapped ui={false} />
             <Card.Content>
                 <Card.Header>My profile</Card.Header>
-                <Card.Meta>Joined {props.registered}</Card.Meta>
+                <Card.Meta>Joined <b>{props.registered}</b></Card.Meta>
                 <Card.Description>
-                    <p>First name: {props.firstName}</p>
-                    <p>Last name: {props.lastName}</p>
-                    <p>Age: {props.age}</p>
-                    <p>Gender: {props.gender}</p>
+                    <p>First name: <b>{props.firstName}</b></p>
+                    <p>Last name: <b>{props.lastName}</b></p>
+                    <p>Age: <b>{props.age}</b></p>
+                    <p>Gender: <b>{props.gender}</b></p>
                 </Card.Description>
             </Card.Content>
         </Card>
