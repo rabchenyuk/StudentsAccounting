@@ -120,7 +120,7 @@ class Auth extends Component {
                                         <Grid.Column stretched>
                                             <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
                                             <div>Don't have account? Register</div>
-                                            <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                            <Button secondary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
