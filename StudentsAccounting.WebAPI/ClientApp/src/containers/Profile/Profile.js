@@ -18,6 +18,7 @@ class Profile extends Component {
     state = { visible: false }
 
     componentDidMount() {
+        console.log('from mount');
         this.props.getProfile(this.props.token);
     }
 
@@ -43,6 +44,8 @@ class Profile extends Component {
                         render={() =>
                             <Container>
                                 <ProfileInfo
+                                    token={this.props.token}
+                                    getProfile={this.props.getProfile}
                                     loading={this.props.profileLoading}
                                     photoUrl={this.props.photoUrl}
                                     registered={convertDate(this.props.registered)}
@@ -62,7 +65,10 @@ class Profile extends Component {
                         path={this.props.match.path + '/update-profile'}
                         render={() =>
                             <Container>
-                                <UpdateProfile {...this.props} />
+                                <UpdateProfile
+                                    loading={this.props.profileLoading}
+                                    update={this.props.updateProfileInfo}
+                                    token={this.props.token} />
                             </Container>} />
                 </Switch>
             </div>

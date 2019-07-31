@@ -17,14 +17,14 @@ class Courses extends Component {
         return (
             <React.Fragment>
                 <Container>
-                    <Grid columns={2}>
+                    <Grid stretched columns={2}>
                         <Grid.Row centered>
                             {this.props.loading ? <Loader /> :
                                 this.props.coursesList.map((val, index) => {
                                     return (
                                         <CourseCard
-                                            imageUrl={val.imageUrl}
                                             key={index}
+                                            imageUrl={val.imageUrl}
                                             header={val.name}
                                             desc={this.props.coursesList[index].description}
                                             subscribe={this.props.subscribe}
@@ -36,7 +36,7 @@ class Courses extends Component {
                                     );
                                 })
                             }
-                        </Grid.Row>
+                            </Grid.Row>
                     </Grid>
                     {this.props.loading ? null :
                         <Container>

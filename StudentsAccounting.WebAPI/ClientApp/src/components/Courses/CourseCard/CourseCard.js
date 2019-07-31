@@ -9,6 +9,9 @@ const StyledCard = styled.div`
     margin-bottom: 2em;
     background: #313438;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const StyledCardContent = styled.div`
@@ -21,10 +24,7 @@ const StyledDescription = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-    display: block;
-    margin: 0 0 1em 0;
     width: 100%;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     background-color: #70c7be;
     border-radius: 4px;
     border: 0;
@@ -63,10 +63,12 @@ const courseCard = props => {
                                 {props.date}
                             </div>
                     }
+                </StyledCardContent>
+                <div style={{ padding: '1.5em' }}>
                     <NavLink to={'/course/' + props.courseId}>
                         <StyledButton secondary>Watch</StyledButton>
                     </NavLink>
-                </StyledCardContent>
+                </div>
             </StyledCard>
         </Grid.Column>
     );

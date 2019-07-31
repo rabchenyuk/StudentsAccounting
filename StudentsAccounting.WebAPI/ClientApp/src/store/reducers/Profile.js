@@ -67,12 +67,12 @@ export const reducer = (state = initialState, action) => {
         case START_UPDATING:
             return {
                 ...state,
-                loading: action.loading
+                profileLoading: action.loading
             }
         case UPDATE_PROFILE_ERROR:
             return {
                 ...state,
-                loading: action.loading,
+                profileLoading: action.loading,
                 updateProfileError: action.updateProfileError
             }
         default:

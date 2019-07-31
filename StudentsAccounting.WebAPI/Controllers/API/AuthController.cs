@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using StudentsAccounting.BusinessLogic.DTO.AuthDTO;
 using StudentsAccounting.BusinessLogic.Interfaces;
-using StudentsAccounting.WebAPI.Helpers;
 using StudentsAccounting.WebAPI.ViewModels.AuthViewModels;
 using System.Threading.Tasks;
 
@@ -15,14 +15,16 @@ namespace StudentsAccounting.WebAPI.Controllers.API
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private readonly IEmailSender _emailSender;
+        private readonly IAuthenticationSchemeProvider _scheme;
 
-        public AuthController(IMapper mapper, IAuthService authService, IEmailSender emailSender)
+        public AuthController(IMapper mapper, IAuthService authService, IEmailSender emailSender, IAuthenticationSchemeProvider scheme)
         {
             _mapper = mapper;
             _authService = authService;
             _emailSender = emailSender;
+            _scheme = scheme;
         }
-        
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
         {

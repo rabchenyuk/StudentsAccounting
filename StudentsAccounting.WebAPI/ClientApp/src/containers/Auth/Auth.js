@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { auth, register } from '../../store/actions/Auth/authActions';
-import { Button, Form, Message, Container, Grid } from 'semantic-ui-react';
+import { Button, Form, Message, Grid } from 'semantic-ui-react';
 import Loader from '../../components/UI/Loader/Loader';
 
 const validateEmail = email => {

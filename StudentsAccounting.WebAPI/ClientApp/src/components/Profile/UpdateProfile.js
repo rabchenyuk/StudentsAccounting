@@ -2,6 +2,7 @@
 import { Redirect } from 'react-router-dom';
 import { Form, Button, Grid } from 'semantic-ui-react';
 import Select from '../UI/Select/Select';
+import Loader from '../UI/Loader/Loader';
 
 const createControl = (config, validation) => {
     return {
@@ -119,7 +120,7 @@ class UpdateProfile extends Component {
             age: this.state.birthValue,
             file: loadedFile
         }
-        this.props.updateProfileInfo(this.props.token, userData);
+        this.props.update(this.props.token, userData);
         this.setState({ submitted: true });
     }
 

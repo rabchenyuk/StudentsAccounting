@@ -32,6 +32,7 @@ namespace StudentsAccounting.BusinessLogic.Services
 
         public async Task<UserDTO> UpdateProfileInfo(int userId, UpdateUserProfileDTO userInfo)
         {
+            var user = await _userRepo.GetByIdAsync(userId);
             string fileName = null;
             if (userInfo.File != null)
             {
@@ -44,13 +45,12 @@ namespace StudentsAccounting.BusinessLogic.Services
                 {
                     await userInfo.File.CopyToAsync(stream);
                 }
+                user.PhotoUrl = fileName;
             }
-            var user = await _userRepo.GetByIdAsync(userId);
             user.FirstName = userInfo.FirstName;
             user.LastName = userInfo.LastName;
             user.Age = userInfo.Age;
             user.Gender = userInfo.Gender;
-            user.PhotoUrl = fileName;
             try
             {
                 _userRepo.Edit(user);

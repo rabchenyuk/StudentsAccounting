@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Card, Image, Grid } from 'semantic-ui-react';
 import Loader from '../UI/Loader/Loader';
+import { ToastContainer } from "react-toastify";
 
 const profileInfo = props => {
     let file = '/UserProfilePhoto/' + props.photoUrl;
@@ -28,9 +29,12 @@ const profileInfo = props => {
         profile = <Loader />
     }
     return (
-        <Grid.Column>
-            {profile}
-        </Grid.Column>
+        <React.Fragment>
+            <Grid.Column>
+                {profile}
+            </Grid.Column>
+            <ToastContainer enableMultiContainer containerId={'profileUpdated'} autoClose={4000} />
+        </React.Fragment>
     );
 }
 

@@ -3,6 +3,7 @@ import CourseCard from '../Courses/CourseCard/CourseCard';
 import { connect } from 'react-redux';
 import { fetchUserCourses } from '../../store/actions/Profile/profileActions';
 import Loader from '../UI/Loader/Loader';
+import { ToastContainer } from "react-toastify";
 
 const convertDate = date => {
     const dateString = new Date(Date.parse(date)).toLocaleDateString();
@@ -38,6 +39,7 @@ class MyCourses extends Component {
         return (
             <React.Fragment>
                 {this.props.loading ? <Loader /> : this.renderCourses()}
+                <ToastContainer enableMultiContainer containerId={'userCourses'} autoClose={4000} />
             </React.Fragment>
         );
     }

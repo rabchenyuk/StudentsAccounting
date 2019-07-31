@@ -1,6 +1,16 @@
 ﻿import axios from '../../../axios';
 import jwt from 'jsonwebtoken';
-import { PROFILE_START, PROFILE_SUCCESS, PROFILE_ERROR, START_FETCHING_USER_COURSES, FETCHING_USER_COURSES_SUCCESS, USER_COURSES_ERROR, START_UPDATING, UPDATE_PROFILE_ERROR } from './profileTypes';
+import { toast } from "react-toastify";
+import {
+    PROFILE_START,
+    PROFILE_SUCCESS,
+    PROFILE_ERROR,
+    START_FETCHING_USER_COURSES,
+    FETCHING_USER_COURSES_SUCCESS,
+    USER_COURSES_ERROR,
+    START_UPDATING,
+    UPDATE_PROFILE_ERROR
+} from './profileTypes';
 
 export const fetchUserData = token => {
     return async dispatch => {
@@ -29,6 +39,7 @@ export const fetchUserCourses = token => {
             });
             dispatch(fetchUserCoursesSuccess(userCourses));
         } catch (e) {
+            toast.error(e.response.data, { containerId: 'userCourses' });
             dispatch(fetchUserCoursesError(e));
         }
     }
@@ -47,9 +58,11 @@ export const updateProfileInfo = (token, userData) => {
         dispatch(startUpdating());
         try {
             const res = await axios.put(`profile/${decoded.nameid}/UpdateProfileInfo`, dataFormBody, { 'headers': { 'Authorization': 'Bearer ' + token, 'Content-Type': 'multipart/form-data' } });
+            toast.success("Profile was successfully updated", { containerId: 'profileUpdated' });
             dispatch(fetchProfileSuccess(res.data));
         } catch (e) {
-            dispatch(updateProfileError(e));
+            toast.error(e.response.data, { containerId: 'profileUpdated' });
+            dispatch(updateProfileError(e.response.data));
         }
     }
 }
