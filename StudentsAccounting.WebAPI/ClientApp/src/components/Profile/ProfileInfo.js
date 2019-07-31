@@ -2,6 +2,32 @@
 import { Card, Image, Grid } from 'semantic-ui-react';
 import Loader from '../UI/Loader/Loader';
 import { ToastContainer } from "react-toastify";
+import styled from 'styled-components';
+
+const StyledCard = styled.div`
+    margin: 0 1em 2em 1em;
+    border-radius: 5px;
+    margin-bottom: 2em;
+    background: #313438;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+
+const StyledCardContent = styled.div`
+    padding: 1.5em;
+`;
+
+const StyledDescription = styled.div`
+    margin: 0 0 2em 0;
+    color: #fff;
+`;
+
+const StyledImage = styled.img`
+    border-radius: 4px 4px 0 0;
+    width: 100%;
+`;
 
 const profileInfo = props => {
     let file = '/UserProfilePhoto/' + props.photoUrl;
@@ -10,19 +36,21 @@ const profileInfo = props => {
     }
 
     let profile = (
-        <Card centered>
-            <Image src={file} wrapped ui={false} />
-            <Card.Content>
-                <Card.Header>My profile</Card.Header>
-                <Card.Meta>Joined <b>{props.registered}</b></Card.Meta>
-                <Card.Description>
-                    <p>First name: <b>{props.firstName}</b></p>
-                    <p>Last name: <b>{props.lastName}</b></p>
-                    <p>Age: <b>{props.age}</b></p>
-                    <p>Gender: <b>{props.gender}</b></p>
-                </Card.Description>
-            </Card.Content>
-        </Card>
+        <Grid.Column width={8}>
+            <StyledCard>
+                <StyledImage src={file} wrapped ui={false} />
+                <StyledCardContent>
+                    <Card.Header>My profile</Card.Header>
+                    <Card.Meta>Joined <b>{props.registered}</b></Card.Meta>
+                    <StyledDescription>
+                        <p>First name: <b>{props.firstName}</b></p>
+                        <p>Last name: <b>{props.lastName}</b></p>
+                        <p>Age: <b>{props.age}</b></p>
+                        <p>Gender: <b>{props.gender}</b></p>
+                    </StyledDescription>
+                </StyledCardContent>
+            </StyledCard>
+        </Grid.Column>
     );
 
     if (props.loading) {
@@ -30,9 +58,7 @@ const profileInfo = props => {
     }
     return (
         <React.Fragment>
-            <Grid.Column>
-                {profile}
-            </Grid.Column>
+            {profile}
             <ToastContainer enableMultiContainer containerId={'profileUpdated'} autoClose={4000} />
         </React.Fragment>
     );

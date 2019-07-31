@@ -6,7 +6,7 @@ import ProfileInfo from '../../components/Profile/ProfileInfo';
 import MyCourses from '../../components/Profile/MyCourses';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
 import UpdateProfile from '../../components/Profile/UpdateProfile';
-import { Container } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 
 const convertDate = date => {
     const dateString = new Date(Date.parse(date)).toLocaleDateString();
@@ -18,7 +18,6 @@ class Profile extends Component {
     state = { visible: false }
 
     componentDidMount() {
-        console.log('from mount');
         this.props.getProfile(this.props.token);
     }
 
@@ -43,17 +42,20 @@ class Profile extends Component {
                         path={this.props.match.path}
                         render={() =>
                             <Container>
-                                <ProfileInfo
-                                    token={this.props.token}
-                                    getProfile={this.props.getProfile}
-                                    loading={this.props.profileLoading}
-                                    photoUrl={this.props.photoUrl}
-                                    registered={convertDate(this.props.registered)}
-                                    firstName={this.props.firstName}
-                                    lastName={this.props.lastName}
-                                    age={this.props.age}
-                                    gender={this.props.gender}
-                                />
+                                <Grid stretched columns={1}>
+                                    <Grid.Row centered>
+                                        <ProfileInfo
+                                            token={this.props.token}
+                                            getProfile={this.props.getProfile}
+                                            loading={this.props.profileLoading}
+                                            photoUrl={this.props.photoUrl}
+                                            registered={convertDate(this.props.registered)}
+                                            firstName={this.props.firstName}
+                                            lastName={this.props.lastName}
+                                            age={this.props.age}
+                                            gender={this.props.gender} />
+                                    </Grid.Row>
+                                </Grid>
                             </Container>} />
                     <Route
                         path={this.props.match.path + '/my-courses'}
@@ -66,6 +68,8 @@ class Profile extends Component {
                         render={() =>
                             <Container>
                                 <UpdateProfile
+                                    firstName={this.props.firstName}
+                                    lastName={this.props.lastName}
                                     loading={this.props.profileLoading}
                                     update={this.props.updateProfileInfo}
                                     token={this.props.token} />

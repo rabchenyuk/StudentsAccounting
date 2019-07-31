@@ -108,7 +108,7 @@ class Auth extends Component {
                 <Grid.Row centered>
                     <Grid.Column width={5}>
                         {this.props.loading ? <Loader /> :
-                            <Form error={this.props.error != null && !this.state.formTouched}>
+                            <Form style={{ marginTop: '2em' }} error={this.props.error != null && !this.state.formTouched}>
                                 {this.renderInputs()}
                                 <Message
                                     error

@@ -2,7 +2,6 @@
 import { Redirect } from 'react-router-dom';
 import { Form, Button, Grid } from 'semantic-ui-react';
 import Select from '../UI/Select/Select';
-import Loader from '../UI/Loader/Loader';
 
 const createControl = (config, validation) => {
     return {
@@ -55,10 +54,10 @@ let loadedFile;
 class UpdateProfile extends Component {
     state = {
         isFormValid: false,
-        formControls: createFormControls(),
+        formControls: createFormControls(this.props.firstName, this.props.lastName),
         fileControl: createFileControl(),
         genderValue: 'Male',
-        birthValue: '',
+        birthValue: 1900,
         submitted: false
     }
 
