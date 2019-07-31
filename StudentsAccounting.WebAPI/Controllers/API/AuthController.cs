@@ -62,5 +62,29 @@ namespace StudentsAccounting.WebAPI.Controllers.API
                 return Redirect($"/confirm?token={result}");
             return BadRequest();
         }
+
+        [HttpPost("forgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody]ForgotPasswordViewModel forgotPassword)
+        {
+            var result = await _authService.ForgotPassword(forgotPassword.Email);
+            if (result.userId == null)
+                return BadRequest("User was not found");
+            var callbackUrl = Url.Action(
+                "ResetPassword", 
+                "Auth", 
+                new { userId = result.userId, code = result.code }, 
+                protocol: HttpContext.Request.Scheme);
+            await _authService.SendPassword(callbackUrl, forgotPassword.Email);
+            return Content("Check your email");
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string userId, string code, [FromForm]ResetPasswordViewModel resetPassword)
+        {
+            var result = await _authService.ResetPassword(resetPassword.Email, code, resetPassword.Password);
+            if (result.Succeeded)
+                return Content("Your password has been reset");
+            return BadRequest("Something went wrong");
+        }
     }
 }

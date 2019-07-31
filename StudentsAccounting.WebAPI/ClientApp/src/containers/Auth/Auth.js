@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth, register } from '../../store/actions/Auth/authActions';
 import { Button, Form, Message, Grid } from 'semantic-ui-react';
@@ -121,6 +122,7 @@ class Auth extends Component {
                                             <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
                                             <div>Don't have account? Register</div>
                                             <Button secondary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                            <NavLink to='/recover'><Button>Recover password</Button></NavLink>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

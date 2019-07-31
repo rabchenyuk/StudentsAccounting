@@ -10,6 +10,9 @@ namespace StudentsAccounting.BusinessLogic.Interfaces
         Task<IdentityResult> Register(RegisterDTO registerDTO);
         Task<(string userId, string code)> GenerateToken();
         Task SendEmail(string callbackUrl, string email);
+        Task SendPassword(string callbackUrl, string email);
         Task<string> Confirmation(string userId, string code, string password);
+        Task<(string userId, string code)> ForgotPassword(string email);
+        Task<IdentityResult> ResetPassword(string email, string code, string password);
     }
 }

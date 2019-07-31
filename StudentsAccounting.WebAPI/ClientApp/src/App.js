@@ -10,6 +10,7 @@ import Profile from './containers//Profile/Profile';
 import Confirm from './containers/Auth/Confirm/Confirm';
 import Admin from './containers/Admin/Admin';
 import CourseDetail from './components/Courses/CourseDetail/CourseDetail';
+import RecoverPassword from './containers/Auth/RecoverPassword/RecoverPassword';
 
 class App extends Component {
     componentDidMount() {
@@ -21,6 +22,7 @@ class App extends Component {
             <Switch>
                 <Route path='/course/:id' component={CourseDetail} />
                 <Route path='/auth' component={Auth} />
+                <Route path='/recover' component={RecoverPassword} />
                 <Route path='/confirm' component={Confirm} />
                 <Route path='/' exact component={Courses} />
                 <Redirect to='/' />

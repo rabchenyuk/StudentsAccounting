@@ -35,6 +35,13 @@ export const auth = (login, password) => {
     }
 }
 
+export const forgotPassword = email => {
+    const data = { email };
+    return async dispatch => {
+        const res = await axios.post('auth/forgotPassword', data);
+    }
+}
+
 export const register = (login, password) => {
     return async dispatch => {
         dispatch(registerStart());

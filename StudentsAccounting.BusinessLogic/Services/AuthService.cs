@@ -67,6 +67,12 @@ namespace StudentsAccounting.BusinessLogic.Services
                 $"Finish your registration using this link: <a href='{callbackUrl}'>link</a>");
         }
 
+        public async Task SendPassword(string callbackUrl, string email)
+        {
+            await _emailSender.SendEmailAsync(email, "Recover password",
+                $"To recover your password use this link: <a href='{callbackUrl}'>link</a>");
+        }
+
         public async Task<string> Confirmation(string userId, string code, string password)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -76,6 +82,20 @@ namespace StudentsAccounting.BusinessLogic.Services
             await _userManager.ConfirmEmailAsync(user, code);
             var userToLogin = new LoginDTO { Login = user.Email, Password = password };
             return await Login(userToLogin);
+        }
+
+        public async Task<(string userId, string code)> ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            return (user.Id.ToString(), code);
+        }
+
+        public async Task<IdentityResult> ResetPassword(string email, string code, string password)
+        {
+            var user = await _userManager.FindByNameAsync(email);
+            var result = await _userManager.ResetPasswordAsync(user, code, password);
+            return result;
         }
     }
 }

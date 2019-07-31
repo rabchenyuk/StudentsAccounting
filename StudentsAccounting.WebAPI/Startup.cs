@@ -59,6 +59,8 @@ namespace StudentsAccounting.WebAPI
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddTransient<IValidator<LoginViewModel>, LoginValidation>();
+            services.AddTransient<IValidator<RegisterViewModel>, RegisterValidation>();
+            services.AddTransient<IValidator<ForgotPasswordViewModel>, ForgotPasswordValidation>();
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddTransient<IBackgroundEmailSender, BackgroundEmailSender>();
