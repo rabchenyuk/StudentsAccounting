@@ -14,16 +14,19 @@ namespace StudentsAccounting.BusinessLogic.Services
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> _repo;
+        private readonly IRepository<User> _userRepo;
         private readonly IRepository<UsersCourses> _usersCoursesRepo;
         private readonly IMapper _mapper;
         private readonly IBackgroundEmailSender _backgroundEmailSender;
 
         public CourseService(IRepository<Course> repo,
+                             IRepository<User> userRepo,
                              IRepository<UsersCourses> usersCoursesRepo,
                              IMapper mapper,
                              IBackgroundEmailSender backgroundEmailSender)
         {
             _repo = repo;
+            _userRepo = userRepo;
             _usersCoursesRepo = usersCoursesRepo;
             _mapper = mapper;
             _backgroundEmailSender = backgroundEmailSender;
@@ -101,6 +104,8 @@ namespace StudentsAccounting.BusinessLogic.Services
         public async Task<Response> RegisterToCourse(int userId, int courseId, DateTime startDate)
         {
             var res = new Response();
+            var user = await _userRepo.GetByIdAsync(userId);
+            var course = await _repo.GetByIdAsync(courseId);
             var userInCourse = await _usersCoursesRepo.GetSingleAsync(u => u.UserId == userId && u.CourseId == courseId && u.StartDate == startDate);
             if (userInCourse == null)
             {
@@ -110,7 +115,7 @@ namespace StudentsAccounting.BusinessLogic.Services
                     _usersCoursesRepo.Add(userCourse);
                     res.Successful = true;
                     res.Information = "You have successfully registered to course";
-                    _backgroundEmailSender.SendNotificationEmails(userCourse.UserId, userCourse.CourseId, userCourse.StartDate);
+                    _backgroundEmailSender.SendNotificationEmails(user.Email, course.CourseName, userCourse.StartDate);
                     return res;
                 }
                 catch (Exception e)
