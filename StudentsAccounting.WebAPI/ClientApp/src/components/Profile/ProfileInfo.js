@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Card, Image, Grid } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 import Loader from '../UI/Loader/Loader';
 import { ToastContainer } from "react-toastify";
 import styled from 'styled-components';
@@ -40,12 +40,12 @@ const profileInfo = props => {
             <StyledCard>
                 <StyledImage src={file} wrapped ui={false} />
                 <StyledCardContent>
-                    <Card.Header>My profile</Card.Header>
-                    <Card.Meta>Joined <b>{props.registered}</b></Card.Meta>
+                    <h1 style={{ color: '#fff' }}>My profile</h1>
+                    <Card.Meta style={{ color: '#fff', paddingBottom: '1em' }}>Joined <b style={{ color: '#fff' }}>{props.registered}</b></Card.Meta>
                     <StyledDescription>
                         <p>First name: <b>{props.firstName}</b></p>
                         <p>Last name: <b>{props.lastName}</b></p>
-                        <p>Age: <b>{props.age}</b></p>
+                        <p>Age: <b>{props.age === 0 ? null : props.age}</b></p>
                         <p>Gender: <b>{props.gender}</b></p>
                     </StyledDescription>
                 </StyledCardContent>
